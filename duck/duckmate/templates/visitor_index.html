@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}Rentals{% endblock %}
+{% block header %}
+    {% include 'visitor_header.html' %}
+{% endblock %}
+{% block content %}
+    <div class="albums-container container-fluid">
+
+    <div class="row">
+        {% if rentals %}
+            {% for rental in rentals %}
+                <div class="col-sm-4 col-lg-2">
+                    <div class="thumbnail">
+                        <a href="">
+                            <img src="{{ rental.picture.url }}" class="img-responsive">
+                        </a>
+                        <div class="caption">
+                            <h5 style="margin:0">{{ rental.address }}</h5>
+                            <p style="margin:0">${{ rental.price }}</p><span class="text-danger"> {{ rental.bedroom }}bed/{{ rental.bathroom }}bath</span>
+
+                            <!-- View Details -->
+                            <a href="" class="btn btn-primary btn-sm" role="button">View Details</a>
+
+                            <a href="{% url 'duckmate:favorite' rental.id%}" class="btn btn-default btn-sm btn-favorite" role="button">
+                                <span class="glyphicon glyphicon-star {% if rental.is_favorite %}active{% endif %}"></span>
+                            </a>
+                            <span>
+                            <small>{{ rental.favorite_count }}</small>
+                            </span>
+
+
+                            <!-- Favorite Album -->
+
+                        </div>
+                    </div>
+                </div>
+
+            {% endfor %}
+        {% else %}
+            <div class="col-sm-12">
+                <br>
+                <a href="{% url 'duckmate:create_rental' %}">
+                    <button type="button" class="btn btn-success">
+                        <span class="glyphicon glyphicon-plus"></span>&nbsp; Add your Rentals
+                    </button>
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

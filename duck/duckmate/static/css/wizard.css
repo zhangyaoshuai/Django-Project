@@ -1,0 +1,340 @@
+.label{
+    padding: 0.2em 0.6em 0.2em;
+    border: 1px solid #999999;
+    border-radius: 3px;
+    color: #999999;
+    background-color: #FFFFFF;
+    font-weight: 500;
+    font-size: 11px;
+    text-transform: uppercase;
+}
+.label-primary{
+    border-color: #3472F7;
+    color: #3472F7;
+}
+.label-info{
+    border-color: #2CA8FF;
+    color: #2CA8FF;
+}
+.label-success{
+    border-color: #05AE0E;
+    color: #05AE0E;
+}
+.label-warning{
+    border-color: #FF9500;
+    color: #FF9500;
+}
+.label-danger{
+    border-color: #FF3B30;
+    color: #FF3B30;
+}
+
+label.error{
+    color: #FF3B30;
+    margin-top: 5px;
+    margin-bottom: 0;
+
+}
+label{
+    font-weight: 400;
+}
+.nav-pills > li + li {
+    margin-left: 0;
+}
+.nav-pills > li > a {
+    border: 1px solid #2CA8FF;
+    border-radius: 0;
+    color: #2CA8FF;
+    margin-left: -1px;
+}
+.nav > li > a:hover, .nav > li > a:focus {
+    background-color: #F5F5F5;
+}
+.nav-pills.ct-blue > li.active > a, .nav-pills.ct-blue > li.active > a:hover, .nav-pills.ct-blue > li.active > a:focus, .pagination.ct-blue > .active > a, .pagination.ct-blue > .active > span, .pagination.ct-blue > .active > a:hover, .pagination.ct-blue > .active > span:hover, .pagination.ct-blue > .active > a:focus, .pagination.ct-blue > .active > span:focus{
+   background-color: #3472F7;
+}
+.nav-pills.ct-azure > li.active > a, .nav-pills.ct-azure > li.active > a:hover, .nav-pills.ct-azure > li.active > a:focus, .pagination.ct-azure > .active > a, .pagination.ct-azure > .active > span, .pagination.ct-azure > .active > a:hover, .pagination.ct-azure > .active > span:hover, .pagination.ct-azure > .active > a:focus, .pagination.ct-azure > .active > span:focus{
+    background-color: #2CA8FF;
+}
+.nav-pills.ct-green > li.active > a, .nav-pills.ct-green > li.active > a:hover, .nav-pills.ct-green > li.active > a:focus, .pagination.ct-green > .active > a, .pagination.ct-green > .active > span, .pagination.ct-green > .active > a:hover, .pagination.ct-green > .active > span:hover, .pagination.ct-green > .active > a:focus, .pagination.ct-green > .active > span:focus{
+   background-color: #05AE0E;
+}
+.nav-pills.ct-orange > li.active > a, .nav-pills.ct-orange > li.active > a:hover, .nav-pills.ct-orange > li.active > a:focus, .pagination.ct-orange > .active > a, .pagination.ct-orange > .active > span, .pagination.ct-orange > .active > a:hover, .pagination.ct-orange > .active > span:hover, .pagination.ct-orange > .active > a:focus, .pagination.ct-orange > .active > span:focus{
+   background-color: #FF9500;
+}
+.nav-pills.ct-red > li.active > a, .nav-pills.ct-red > li.active > a:hover, .nav-pills.ct-red > li.active > a:focus, .pagination.ct-red > .active > a, .pagination.ct-red > .active > span, .pagination.ct-red > .active > a:hover, .pagination.ct-red > .active > span:hover, .pagination.ct-red > .active > a:focus, .pagination.ct-red > .active > span:focus{
+   background-color: #FF3B30;
+}
+.nav-pills.ct-blue > li > a {
+    border: 1px solid #3472F7;
+    color: #3472F7;
+}
+.nav-pills.ct-azure > li > a {
+    border: 1px solid #2CA8FF;
+    color: #2CA8FF;
+}
+.nav-pills.ct-green > li > a {
+    border: 1px solid #05AE0E;
+    color: #05AE0E;
+}
+.nav-pills.ct-orange > li > a {
+    border: 1px solid #FF9500;
+    color: #FF9500;
+}
+.nav-pills.ct-red > li > a {
+    border: 1px solid #FF3B30;
+    color: #FF3B30;
+}
+
+.nav-pills > li.active > a,
+.nav-pills > li.active > a:hover,
+.nav-pills > li.active > a:focus {
+    background-color: #2CA8FF;
+    color: #FFFFFF;
+}
+
+.nav-pills > li:first-child > a{
+    border-radius: 4px 0 0 4px;
+    margin: 0;
+}
+.nav-pills > li:last-child > a{
+    border-radius: 0 4px 4px 0;
+}
+
+.pagination.no-border > li > a, .pagination.no-border > li > span{
+    border: 0;
+}
+.pagination > li > a, .pagination > li > span, .pagination > li:first-child > a, .pagination > li:first-child > span, .pagination > li:last-child > a, .pagination > li:last-child > span{
+    border-radius: 50%;
+    margin: 0 2px;
+    color: #777777;
+}
+.pagination > li.active > a, .pagination > li.active > span, .pagination > li.active > a:hover, .pagination > li.active > span:hover, .pagination > li.active > a:focus, .pagination > li.active > span:focus {
+    background-color: #2CA8FF;
+    border: 0;
+    color: #FFFFFF;
+    padding: 7px 13px;
+}
+
+.image-container{
+    height: 100%;
+    background-position: center center;
+    background-size: cover;
+}
+.has-success .form-control,
+.has-error .form-control,
+.has-success .form-control:focus,
+.has-error .form-control:focus{
+    border-color: #E3E3E3;
+    box-shadow: none;
+}
+.has-success .form-control,
+.has-success .form-control-feedback,
+.form-control.valid:focus{
+    border-color: #05AE0E;
+    color: #05AE0E;
+}
+.has-error .form-control,
+.has-error .form-control-feedback,
+.form-control.error{
+    color: #FF3B30;
+    border-color: #FF3B30;
+}
+.progress {
+    background-color: #E5E5E5;
+    border-radius: 3px;
+    box-shadow: none;
+    height: 4px;
+}
+.progress-thin{
+    height: 2px;
+}
+.card{
+    background-color: #FFFFFF;
+    padding: 10px 0 20px;
+    width: 100%;
+}
+
+.wizard-container{
+
+    padding-top: 100px;
+    z-index: 3;
+}
+.wizard-card{
+    min-height: 410px;
+    background-color: #FFFFFF;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.15), 0 0 1px 1px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    padding: 10px 0;
+    transition: all 0.2s;
+    -webkit-transition: all 0.2s;
+}
+.wizard-card .picture-container{
+    position: relative;
+    cursor: pointer;
+    text-align: center;
+}
+.wizard-card .picture{
+    width: 106px;
+    height: 106px;
+    background-color: #999999;
+    border: 4px solid #CCCCCC;
+    color: #FFFFFF;
+    border-radius: 50%;
+    margin: 5px auto;
+    overflow: hidden;
+    transition: all 0.2s;
+    -webkit-transition: all 0.2s;
+}
+.wizard-card .picture:hover{
+    border-color: #2ca8ff;
+}
+.wizard-card.ct-wizard-azzure .picture:hover{
+    border-color: #2CA8FF;
+}
+.wizard-card.ct-wizard-green .picture:hover{
+    border-color: #05ae0e;
+}
+.wizard-card.ct-wizard-blue .picture:hover{
+    border-color: #3472f7;
+}
+.wizard-card.ct-wizard-orange .picture:hover{
+    border-color: #ff9500;
+}
+.wizard-card.ct-wizard-red .picture:hover{
+    border-color: #ff3b30;
+}
+.wizard-card .picture input[type="file"] {
+    cursor: pointer;
+    display: block;
+    height: 100%;
+    left: 0;
+    opacity: 0 !important;
+    position: absolute;
+    top: 0;
+    width: 100%;
+}
+
+.wizard-card .picture-src{
+    width: 100%;
+
+}
+.wizard-card .tab-content{
+    min-height: 340px;
+    padding: 20px 10px;
+}
+
+.wizard-card .wizard-footer{
+    padding: 0 10px;
+}
+
+.wizard-card .disabled{
+    display: none;
+}
+
+.wizard-card .wizard-header h3{
+    font-weight: 200;
+    text-align: center;
+}
+.wizard-card .nav-pills > li{
+    text-align: center;
+}
+.wizard-card .nav-pills > li a {
+    border: 0 !important;
+    text-transform: uppercase;
+    background-color: #999999;
+    color: #FFFFFF !important;
+    font-size: 12px;
+}
+.wizard-card.ct-wizard-green .nav-pills > li.active a{
+    background-color: #05ae0e;
+}
+.wizard-card.ct-wizard-azzure .nav-pills > li.active a{
+    background-color: #2CA8FF;
+}
+.wizard-card.ct-wizard-blue .nav-pills > li.active a{
+    background-color: #3472f7;
+}
+.wizard-card.ct-wizard-orange .nav-pills > li.active a{
+    background-color: #ff9500;
+}
+.wizard-card.ct-wizard-red .nav-pills > li.active a{
+    background-color: #ff3b30;
+}
+
+.wizard-card .nav-pills > li > a:hover, .wizard-card .nav-pills > li > a:focus{
+    background-color: #999999;
+    cursor: default;
+}
+.wizard-card .btn{
+    text-transform: uppercase;
+}
+.wizard-card .nav-pills > li:first-child > a {
+    border-radius: 0;
+    margin: 0;
+}
+.wizard-card .nav-pills > li:last-child > a{
+    border-radius: 0;
+}
+.wizard-card .info-text{
+    text-align: center;
+    font-weight: 300;
+    margin: 10px 0 30px;
+}
+.wizard-card .choice{
+    text-align: center;
+    cursor: pointer;
+    margin-top: 20px;
+}
+.wizard-card .choice .icon{
+   text-align: center;
+   vertical-align: middle;
+   height: 116px;
+   width: 116px;
+   border-radius: 50%;
+   background-color: #999999;
+   color: #FFFFFF;
+   margin: 0 auto 20px;
+   border: 4px solid #CCCCCC;
+   transition: all 0.2s;
+   -webkit-transition: all 0.2s;
+}
+.wizard-card .choice i{
+    font-size: 30px;
+    line-height: 111px;
+}
+
+.wizard-card .choice:hover .icon, .wizard-card .choice.active .icon{
+    border-color: #2ca8ff;
+}
+
+.wizard-card.ct-wizard-azzure .choice:hover .icon, .wizard-card.ct-wizard-azzure .choice.active .icon{
+    border-color: #2CA8FF;
+}
+.wizard-card.ct-wizard-blue .choice:hover .icon, .wizard-card.ct-wizard-blue .choice.active .icon{
+    border-color: #3472f7;
+}
+.wizard-card.ct-wizard-green .choice:hover .icon, .wizard-card.ct-wizard-green .choice.active .icon{
+    border-color: #05ae0e;
+}
+.wizard-card.ct-wizard-orange .choice:hover .icon, .wizard-card.ct-wizard-orange .choice.active .icon{
+    border-color: #ff9500;
+}
+.wizard-card.ct-wizard-red .choice:hover .icon, .wizard-card.ct-wizard-red .choice.active .icon{
+    border-color: #ff3b30;
+}
+
+.wizard-card .choice input[type="radio"],
+.wizard-card .choice input[type="checkbox"]{
+    position: absolute;
+    left: -10000px;
+    z-index: -1;
+}
+.wizard-card .btn-finish{
+    display: none;
+}
+
+.wizard-card .description{
+    color: #999999;
+    font-size: 14px;
+}

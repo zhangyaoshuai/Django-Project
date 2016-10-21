@@ -1,0 +1,217 @@
+{% extends 'base.html' %}
+{% block title %}Add a New Rental{% endblock %}
+
+
+{% block header %}
+    {% include 'basic_header.html' %}
+{% endblock %}
+{% block content %}
+    <div class="image-container set-full-height">
+
+    <!--   Big container   -->
+    <div class="container">
+        <div class="row">
+        <div class="col-sm-8 col-sm-offset-2">
+
+            <!--      Wizard container        -->
+            <div class="wizard-container">
+                <div class="card wizard-card ct-wizard-green" id="wizard">
+                <form method="post" action="{% url 'duckmate:create_rental' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                <!--        You can switch "ct-wizard-azzure"  with one of the next bright colors: "ct-wizard-blue", "ct-wizard-green", "ct-wizard-orange", "ct-wizard-red"             -->
+
+                    	<div class="wizard-header">
+                        	<h3>
+                        	   <b>List</b> Your Rental <br>
+                        	   <small>This information will let us know more about your place.</small>
+                        	</h3>
+                    	</div>
+                    	<ul>
+                            <li><a href="#location" data-toggle="tab">Location</a></li>
+                            <li><a href="#details" data-toggle="tab">Details</a></li>
+                            <li><a href="#description" data-toggle="tab">Description</a></li>
+                            <li><a href="#pictures" data-toggle="tab">Pictures</a></li>
+                            <li><a href="#contacts" data-toggle="tab">Contacts</a></li>
+                        </ul>
+                        <div class="tab-content">
+
+                            <div class="tab-pane" id="location">
+                              <div class="row">
+                                  <div class="col-sm-12">
+                                    <h4 class="info-text"> Let's start with the basic details</h4>
+                                  </div>
+                                  <div class="col-sm-7 col-sm-offset-1">
+                                      <div class="form-group">
+                                        <label class="control-label" for="address">Address</label>
+                                        <input type="text" class="form-control" id="address" name="address" required><span><input class="form-control" type="hidden" id="coordinate" name="coordinate"></span>
+                                      </div>
+                                  </div>
+                                  <div class="col-sm-3">
+                                       <div class="form-group">
+                                            <label class="control-label" for="zipcode">Zip Code</label>
+                                           <input type="number" id="postal_code" name="postal_code" placeholder="Zip Code" class="form-control">
+
+                                          </div>
+                                  </div>
+                                  <div class="col-sm-5 col-sm-offset-1">
+                                      <div class="form-group">
+                                          <label class="control-label" for="city">City</label>
+                                          <input type="text" id="locality" name="city" class="form-control">
+
+                                      </div>
+                                  </div>
+                                  <div class="col-sm-3">
+                                      <div class="form-group">
+                                          <label class="control-label" for="price">Price</label>
+
+                                              <input type="number" class="form-control" id="price" name="price" placeholder="$">
+
+
+                                      </div>
+                                  </div>
+                              </div>
+                            </div>
+
+                            <div class="tab-pane" id="details">
+                                <h4 class="info-text">Tell us more details. </h4>
+                                <div class="row">
+                                    <div class="col-sm-5 col-sm-offset-1">
+                                      <div class="form-group">
+                                          <label class="control-label" for="bedroom">Bedroom</label>
+                                          <input type="number" class="form-control" id="bedroom" name="bedroom" required>
+                                      </div>
+                                    </div>
+                                    <div class="col-sm-5">
+                                      <div class="form-group">
+                                          <label class="control-label" for="bathroom">Bathroom</label>
+                                          <input type="number" class="form-control" id="bathroom" name="bathroom" required>
+                                      </div>
+                                     </div>
+                                     <div class="col-sm-10 col-sm-offset-1">
+                                      <div class="form-group">
+                                          <label>What kind of room are you sharing?</label>
+                                          <select class="selectpicker" id="roomtype" name="roomtype" required="required">
+                                            <option disabled="disabled" selected="">- response -</option>
+                                            <option value="bedroom">Bedroom</option>
+                                            <option value="living room">Living room</option>
+                                            <option value="other">Other</option>
+                                          </select>
+                                       </div>
+                                      </div>
+                                      <div class="col-sm-3 col-sm-offset-1">
+                                       <div class="form-group">
+                                          <label>Your gender</label>
+
+                                          <select class="selectpicker" id="gender" name="gender" required="required">
+                                            <option disabled="disabled" selected=""> Gender </option>
+                                            <option value="male">Male</option>
+		                                    <option value="female">Female</option>
+                                          </select>
+                                       </div>
+                                      </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="description">
+                                <div class="row">
+                                    <h4 class="info-text"> Drop us a small description. </h4>
+                                    <div class="col-sm-6 col-sm-offset-1">
+                                        <div class="form-group">
+                                            <label class="control-label" for="title">Title</label>
+                                            <input type="text" id="title" name="title" class="form-control" placeholder="Title" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-6 col-sm-offset-1">
+                                         <div class="form-group">
+                                            <label>Place description</label>
+                                           <textarea class="form-control" placeholder="Your description *" id="description" name="description" row="9" required style="height:auto; min-height:120px"></textarea>
+
+                                          </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                         <div class="form-group">
+                                            <label>Example</label>
+                                            <p class="description">"Really good fully renovated apartment in Hoboken, looking for nice roommates"</p>
+                                          </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="pictures">
+
+										<h4 class="info-text">Upload your pictures.</h4>
+										<div class="col-sm-12">
+											<div class="form-group">
+												<input id="picture" name="picture" class="file" type="file"
+													multiple data-preview-file-type="any" required>
+
+											</div>
+										</div>
+
+									</div>
+                            <div class="tab-pane" id="contacts">
+                              <div class="row">
+                                  <div class="col-sm-12">
+                                    <h4 class="info-text"> How could we contact you?</h4>
+                                  </div>
+                                  <div class="col-sm-5 col-sm-offset-1">
+                                      <div class="form-group">
+                                        <label class="control-label" for="phone_number">Phone number</label>
+                                        <input type="number" class="form-control" id="phone_number" name="phone_number" placeholder="" required="required" >
+
+                                      </div>
+                                  </div>
+                                  <div class="col-sm-5">
+                                       <div class="form-group">
+                                            <label class="control-label" for="email">Email address</label>
+                                           <input type="text" id="email" name="email" placeholder="xx@xxx" class="form-control" required="required">
+
+                                          </div>
+                                  </div>
+                                  <div class="col-sm-5 col-sm-offset-1">
+                                      <div class="form-group">
+                                        <label class="control-label" for="student_type">Your Status</label>
+                                          <select class="selectpicker" id="student_type" name="student_type"><option disabled="disabled" required>Select</option>
+                                              <option value="graduate">Graduate</option>
+		                                      <option value="udergraduate">Undergraduate</option>
+                                              <option value="employed">Employed</option>
+                                          </select>
+
+                                      </div>
+                                  </div>
+                                  <div class="col-sm-5">
+                                      <div class="form-group">
+                                          <label class="control-label" for="major">Your Major</label>
+                                          <input type="text" class="form-control" id="major" name="major" required>
+                                      </div>
+                                  </div>
+
+                              </di>
+                            </div>
+                        </div>
+                        <div class="wizard-footer">
+                            	<div class="pull-right">
+                                    <input type='button' class='btn btn-next btn-fill btn-success btn-wd btn-sm' name='next' value='Next' />
+                                    <button type='submit' class='btn btn-finish btn-fill btn-success btn-wd btn-sm' name='finish'>Finish</button>
+
+                                </div>
+                                <div class="pull-left">
+                                    <input type='button' class='btn btn-previous btn-fill btn-default btn-wd btn-sm' name='previous' value='Previous' />
+                                </div>
+                                <div class="clearfix"></div>
+                        </div>
+                    </form>
+                </div>
+            </div> <!-- wizard container -->
+        </div>
+        </div> <!-- row -->
+    </div> <!--  big container -->
+
+    <div class="footer">
+        <div class="container">
+
+        </div>
+    </div>
+
+</div>
+{% endblock %}

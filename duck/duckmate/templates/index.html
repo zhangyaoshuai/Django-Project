@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}Rentals{% endblock %}
+{% block header %}
+    {% include 'header.html' %}
+{% endblock %}
+{% block content %}
+    <div class="album-container container-fluid" style="height: 100%">
+    <div class="row" style="height: 100%">
+    <div class="col-sm-8 col-md-8" id="map_container">
+        <div id="map">
+        </div>
+    </div>
+    <div class="col-sm-4 col-md-4" id="result-container">
+        {% if rentals %}
+            {% for rental in rentals %}
+                <!--<div class="col-sm-4 col-lg-2">-->
+                    <div class="thumbnail">
+                        <a href="">
+                            <img src="{{ rental.picture.url }}" class="img-responsive">
+                        </a>
+                        <div class="caption">
+                            <h5 style="margin:0">{{ rental.address }}</h5>
+                            <span class="text-primary" style="margin: 0;text-align: left">${{ rental.price }}</span>
+                            <span style="margin: 0;text-align: right">  {{ rental.city }}</span>
+                            <span class="text-danger"> {{ rental.bedroom }}bed/{{ rental.bathroom }}bath</span>
+                            <!-- View Details -->
+                            <a href="" class="btn btn-primary btn-sm" role="button">View Details</a>
+
+                            <a href="{% url 'duckmate:favorite' rental.id%}" class="btn btn-default btn-sm btn-favorite" role="button">
+                                <span class="glyphicon glyphicon-star {% if rental.is_favorite %}active{% endif %}"></span>
+                            </a>
+                            <span>
+                            <small>{{ rental.favorite_count }}</small>
+                            </span>
+
+                            <!-- Favorite Album -->
+
+                        </div>
+                    </div>
+
+            {% endfor %}
+        {% endif %}
+
+    </div>
+    </div>
+</div>
+{% endblock %}
