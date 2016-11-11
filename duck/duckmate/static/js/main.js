@@ -1,7 +1,7 @@
 
 var RentalListPage = {
 	init: function() {
-		this.$container = $('.albums-container');
+		this.$container = $('.result-container');
 		this.render();
 		this.bindEvents();
 	},

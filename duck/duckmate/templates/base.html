@@ -12,33 +12,25 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap-theme.min.css' %}"/>
     <link rel="stylesheet" type="text/css" href="{% static 'font-awesome/css/font-awesome.min.css' %}"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.2/css/bootstrap-select.min.css">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/wizard.css' %}"/>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css" />
-    <!-- Latest compiled and minified CSS -->
-
-
+    {% block css %}
+    {% endblock %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+    <!-- Latest compiled and minified CSS -->
 
     <script src="{% static 'js/jquery-3.1.1.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.2/js/bootstrap-select.min.js"></script>
-    <script src="{% static 'js/jquery.bootstrap.wizard.js' %}" type="text/javascript"></script>
-    <script src="{% static 'js/wizard.js' %}" type="text/javascript"></script>
-    <script src="{% static 'js/jquery.validate.min.js' %}" type="text/javascript"></script>
-    <script src="{% static 'js/create_rental.js' %}" type="text/javascript"></script>
-    <script src="{% static 'js/index.js' %}" type="text/javascript"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC9RiLfbcMSmMZr3b2Yum9XHGmXKKw2TOg&libraries=places&callback=initAutocomplete"
-	async defer></script>
-    <script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet.js"></script>
-    <!-- Latest compiled and minified JavaScript -->
+    {% block script %}
+    {% endblock %}
     <script src="{% static 'js/main.js' %}"></script>
+    <!-- Latest compiled and minified JavaScript -->
 
 </head>
-<body onload="map()">
+
 {% block header %}
 {% endblock %}
 {% block content %}
 {% endblock %}
 {% include 'footer.html' %}
-</body>
+
 </html>

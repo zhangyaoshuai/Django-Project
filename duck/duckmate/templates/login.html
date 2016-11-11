@@ -1,8 +1,20 @@
-{% extends 'visitor_base.html' %}
+{% extends 'base.html' %}
+{% load staticfiles %}
 {% block title %}Log In{% endblock %}
+{% block css %}
+{% endblock %}
+{% block script %}
+{% endblock %}
+{% block header %}
+    {% include 'visitor_header.html' %}
+{% endblock %}
+{% block login_active %}
+    active
+{% endblock %}
 
 {% block content %}
-<div class="container-fluid">
+    <body>
+    <div class="container-fluid">
 
     <div class="row">
         <div class="col-sm-12 col-md-6">
@@ -45,6 +57,6 @@
     </div>
 
 </div>
-
+</body>
 {% endblock %}
 

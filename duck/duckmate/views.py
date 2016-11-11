@@ -5,41 +5,76 @@ from django.shortcuts import render, get_object_or_404
 from django.db.models import Q
 from .forms import ContactForm, RentalForm, UserForm
 from .models import Contact, Rental
-import time
+from django.core import serializers
+
 
 IMAGE_FILE_TYPES = ['png', 'jpg', 'jpeg']
 
 def index(request):
-    if not request.user.is_authenticated():
-        rentals = Rental.objects.all()
-        rentalList = list(rentals)
-        query = request.GET.get("q")
-        if query:
-            rentals = rentals.filter(
-                Q(title__icontains=query) |
-                Q(address__icontains=query) | Q(city__icontains=query)
-            ).distinct()
+    rentals = Rental.objects.all()
+
+    geoData = {
+        "type": "FeatureCollection",
+        "features": []
+    }
+    for rental in rentals:
+        if rental.coordinate != "":
+            feature = {
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [float(rental.coordinate.split(',')[0]), float(rental.coordinate.split(',')[1])]
+
+                },
+                "properties": {
+                    "picture": rental.picture.url
+                }
+            }
+            geoData["features"].append(feature)
+
+
+    data=serializers.serialize("json", rentals)
+    query = request.GET.get("q")
+    if query:
+        rentals = rentals.filter(
+            Q(title__icontains=query) |
+            Q(address__icontains=query) | Q(city__icontains=query)
+        ).distinct()
+        geoData = {
+            "type": "FeatureCollection",
+            "features": []
+        }
+        for rental in rentals:
+            if rental.coordinate != "":
+                feature = {
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [float(rental.coordinate.split(',')[0]), float(rental.coordinate.split(',')[1])]
+
+                    },
+                    "properties": {
+                        "picture": rental.picture.url
+                    }
+                }
+                geoData["features"].append(feature)
+
+        if not request.user.is_authenticated():
             return render(request, 'visitor_index.html', {
                 'rentals': rentals,
+                'geoData': geoData
             })
         else:
-            return render(request, 'visitor_index.html', {'rentals': rentals})
+            return render(request, 'index.html', {'rentals': rentals,
+                                                  'geoData': geoData
+                                                  })
+    if not request.user.is_authenticated():
+        return render(request, 'visitor_index.html', {
+            'rentals': rentals,
+            'geoData': geoData
+        })
     else:
-        rentals = Rental.objects.all()
-        query = request.GET.get("q")
-        rentalList = list(rentals)
-        if query:
-            rentals = rentals.filter(
-                Q(title__icontains=query) |
-                Q(address__icontains=query) |
-                Q(city__icontains=query)
-            ).distinct()
-            return render(request, 'index.html', {
-                'rentals': rentals,
-            })
-        else:
-            return render(request, 'index.html', {'rentals': rentals})
-
+        #return HttpResponse(data,content_type="application/json")
+        return render(request, 'index.html', {'rentals': rentals,
+                                              'geoData': geoData})
 
 def register(request):
     form = UserForm(request.POST or None)
@@ -54,7 +89,7 @@ def register(request):
             if user.is_active:
                 login(request, user)
                 rentals = Rental.objects.all()
-                return render(request, 'index.html', {'rentals': rentals})
+                return index(request)
     context = {
         "form": form,
     }
@@ -68,8 +103,7 @@ def log_in(request):
         if user is not None:
             if user.is_active:
                 login(request, user)
-                rentals = Rental.objects.all()
-                return render(request, 'index.html', {'rentals': rentals})
+                return index(request)
             else:
                 return render(request, 'login.html', {'error_message': 'Your account has been disabled'})
         else:
@@ -77,13 +111,8 @@ def log_in(request):
     return render(request, 'login.html')
 
 def log_out(request):
-    rentals = Rental.objects.all()
     logout(request)
-    form = UserForm(request.POST or None)
-    context = {
-        "form": form,
-    }
-    return render(request, 'visitor_index.html', {'rentals': rentals})
+    return index(request)
 
 def favorite(request, rental_id):
     rental = get_object_or_404(Rental, pk=rental_id)
@@ -132,7 +161,8 @@ def create_rental(request):
             rental.major = request.POST['major']
             rental.save()
             contact.save()
-            return render(request, 'rental_detail.html', {'rental': rental})
+            #return render(request, 'rental_detail.html', {'rental': rental})
+            return index(request)
         return render(request, 'create_rental.html')
 
 

@@ -1,12 +1,26 @@
-{% extends 'base.html' %}
-{% block title %}Add a New Rental{% endblock %}
 
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}Add a New Rental{% endblock %}
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/wizard.css' %}"/>
+{% endblock %}
+{% block script %}
+    <script src="{% static 'js/jquery.bootstrap.wizard.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/wizard.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/jquery.validate.min.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/create_rental.js' %}" type="text/javascript"></script>
+    <script
+	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC9RiLfbcMSmMZr3b2Yum9XHGmXKKw2TOg&libraries=places&callback=initAutocomplete"
+	async defer></script>
+{% endblock %}
 
 {% block header %}
     {% include 'basic_header.html' %}
 {% endblock %}
 {% block content %}
-    <div class="image-container set-full-height">
+    <body>
+    <div class="image-container set-full-height" style="background-image: url('{% static "img/cover_4.jpg" %}')">
 
     <!--   Big container   -->
     <div class="container">
@@ -49,7 +63,7 @@
                                   <div class="col-sm-3">
                                        <div class="form-group">
                                             <label class="control-label" for="zipcode">Zip Code</label>
-                                           <input type="number" id="postal_code" name="postal_code" placeholder="Zip Code" class="form-control">
+                                           <input type="number" id="postal_code" name="postal_code" class="form-control">
 
                                           </div>
                                   </div>
@@ -186,7 +200,7 @@
                                       </div>
                                   </div>
 
-                              </di>
+                              </div>
                             </div>
                         </div>
                         <div class="wizard-footer">
@@ -200,18 +214,18 @@
                                 </div>
                                 <div class="clearfix"></div>
                         </div>
+                    
                     </form>
+
                 </div>
             </div> <!-- wizard container -->
         </div>
         </div> <!-- row -->
     </div> <!--  big container -->
 
-    <div class="footer">
-        <div class="container">
 
         </div>
-    </div>
+    
 
-</div>
+    </body>
 {% endblock %}

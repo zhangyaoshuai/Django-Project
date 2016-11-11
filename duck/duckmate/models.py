@@ -15,6 +15,7 @@ class Migration(migrations.Migration):
         ),
     ]
 
+
 class Contact(models.Model):
     user = models.ForeignKey(User, default=1)
     male = 'm'

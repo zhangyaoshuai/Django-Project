@@ -14,7 +14,7 @@
         <!-- Items -->
         <div class="collapse navbar-collapse" id="topNavBar">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="{% url 'duckmate:index' %}"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp; Rentals</a></li>
+                <li class="{% block rental_active %}{% endblock %}"><a href="{% url 'duckmate:index' %}"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp; Rentals</a></li>
             </ul>
             <form class="navbar-form navbar-left" role="search" method="get" action="{% url 'duckmate:index' %}">
                 <div class="form-group">
@@ -65,12 +65,12 @@
                                 <li><a href="">Oldest</a></li>
 							</ul>
                 </li>
-                <li>
+                <li class="{% block add_rental_active %}{% endblock %}">
                     <a href="{% url 'duckmate:create_rental' %}">
                         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp; Add Rentals
                     </a>
                 </li>
-                <li>
+                <li class="{% block login_active %}{% endblock %}">
                     <a href="{% url 'duckmate:log_in' %}">
                         <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>&nbsp; Log in
                     </a>

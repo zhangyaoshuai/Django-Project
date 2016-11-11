@@ -1,11 +1,21 @@
-body {
-    background: white;
-}
-.image-container {
+body .image-container {
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
     background-repeat:no-repeat;
     background-size:100%;
+    background: white;
 }
+
+.thumbnail > image {
+    max-height: 150px;
+}
+
 .dropdown:hover .dropdown-menu {
+    display: block;
+}
+.selectpicker:hover option {
     display: block;
 }
 ul.errorlist {
