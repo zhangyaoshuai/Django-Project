@@ -1,5 +1,5 @@
 <nav class="navbar navbar-inverse">
-    <div class="container-fluid">
+    <div class="container-fluid" style="margin: 0; padding: 0">
 
         <!-- Header -->
         <div class="navbar-header">
@@ -16,7 +16,7 @@
             <ul class="nav navbar-nav">
                 <li class="active"><a href="{% url 'duckmate:index' %}"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp; Rentals</a></li>
             </ul>
-            <form class="navbar-form navbar-left" role="search" method="get" action="{% url 'duckmate:index' %}">
+            <form class="navbar-form navbar-left" role="search" method="get" action="">
                 <div class="form-group">
                     <input type="text" class="form-control" name="q" value="{{ request.GET.q }}">
                 </div>
@@ -48,11 +48,11 @@
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">Location
                         <span class="caret"></span></a>
-							<ul class="dropdown-menu" style="border-radius: 6px">
-                                <li><a href="">Jersey City</a></li>
-                                <li><a href="">Hoboken</a></li>
-                                <li><a href="">Union City</a></li>
-                                <li><a href="">Weehawken</a></li>
+							<ul class="dropdown-menu" style="border-radius: 6px" id="areaList">
+                                <a href="#"><li class="list-group-item" value="Jersey City" id="jersey_city">Jersey City</li></a>
+                                <a href="#"><li class="list-group-item" value="Hoboken">Hoboken</li></a>
+                                <a href="#"><li class="list-group-item" value="Union City">Union City</li></a>
+                                <a href="#"><li class="list-group-item" value="Weehawken">Weehawken</li></a>
 							</ul>
                 </li>
 
@@ -60,10 +60,10 @@
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">Filter
                         <span class="caret"></span></a>
 							<ul class="dropdown-menu" style="border-radius: 6px">
-                                <li><a href="">Lowest price</a></li>
-                                <li><a href="">Highest price</a></li>
-                                <li><a href="">Newest</a></li>
-                                <li><a href="">Oldest</a></li>
+                                <a href="#"><li class="list-group-item" id="priceLowToHigh">Lowest price</li></a>
+                                <a href="#"><li class="list-group-item" id="priceHighToLow">Highest price</li></a>
+                                <a href="#"><li class="list-group-item" id="newest">Newest</li></a>
+                                <a href="#"><li class="list-group-item" id="oldest">Oldest</li></a>
 							</ul>
                 </li>
                 <li>
@@ -71,19 +71,27 @@
                         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp; Add Rentals
                     </a>
                 </li>
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">{{ user.username }}
-                        <span class="caret"></span></a>
-                    <ul class="dropdown-menu" style="border-radius: 6px">
-                        <li>
-                            <a href=""><span class="glyphicon glyphicon-user" aria-hidden="true"></span> My Account</a>
-                        </li>
-                        <li><a href="{% url 'duckmate:log_out' %}">
-                        <span class="glyphicon glyphicon-off" aria-hidden="true"></span> Log out
+                {% if user.username %}
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">{{ user.username }}
+                            <span class="caret"></span></a>
+                        <ul class="dropdown-menu" style="border-radius: 6px">
+                            <li>
+                                <a href=""><span class="glyphicon glyphicon-user" aria-hidden="true"></span> My Account</a>
+                            </li>
+                            <li><a href="{% url 'duckmate:log_out' %}">
+                            <span class="glyphicon glyphicon-off" aria-hidden="true"></span> Log out
+                            </a>
+                            </li>
+                        </ul>
+                    </li>
+                {% else %}
+                     <li>
+                        <a href="{% url 'duckmate:log_in' %}">
+                        <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span> Log in
                         </a>
-                        </li>
-                    </ul>
-                </li>
+                    </li>
+                {% endif %}
             </ul>
         </div>
 

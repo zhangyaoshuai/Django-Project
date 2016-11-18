@@ -19,6 +19,7 @@ var RentalListPage = {
 			$.getJSON(url, function(result) {
 				if (result.success) {
 					$('.glyphicon-star', self).toggleClass('active');
+
 				}
 			});
 

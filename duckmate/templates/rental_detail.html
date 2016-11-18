@@ -18,7 +18,7 @@
                 <div class="panel-body">
                     <a href="{% url 'duckmate:rental_detail' rental.id %}">
                         {% if rental.picture %}
-                            <img src="{{ rental.picture.url }}" class="img-responsive">
+                            <img src="{{ rental.picture.url }}" class="img-responsive" style="width: 100%;height: 200px;">
                         {% else %}
                             <h3>No image to display</h3>
                         {% endif %}
@@ -96,44 +96,6 @@
 
             </div>
           </div>
-
-
-         <!--
-            <ul class="nav nav-pills" style="margin-bottom: 10px;">
-                <li role="presentation" class="active"><a href="{% url 'duckmate:rental_detail' rental.id %}">Rental Info</a></li>
-                <li role="presentation">Contact Info</li>
-            </ul>
-
-            <div class="panel panel-success">
-             <div class="panel panel-heading" style="height: 35%">
-                    <h4>{{ rental.title }}</h4>
-                </div>
-                <div class="panel-body">
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th>Bedrooms</th>
-                            <th>Bathrooms</th>
-                            <th>Price</th>
-                            <th>Student Type</th>
-                            <th>Major</th>
-                            <th>Gender</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>{{ rental.bedroom }}</td>
-                                <td>{{ rental.bathroom }}</td>
-                                <td>${{ rental.price }}</td>
-                                <td>{{ rental.student_type }}</td>
-                                <td>{{ rental.major }}</td>
-                                <td>{{ rental.gender }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                </div>
-            </div>-->
 
         </div>
 

@@ -24,7 +24,7 @@
                     {% if error_message %}
                         <p class="text-danger small"><strong>{{ error_message }}</strong></p>
                     {% endif %}
-                    <form class="form-horizontal" role="form" action="{% url 'duckmate:log_in'%}" method="post" enctype="multipart/form-data">
+                    <form class="form-horizontal" role="form" action="{% url 'duckmate:log_in' %}" method="post" enctype="multipart/form-data">
                         {% csrf_token %}
                         <div class="form-group">
                             <label class="control-label col-sm-2" for="id_username">

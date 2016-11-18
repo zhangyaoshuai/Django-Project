@@ -24,6 +24,11 @@ SECRET_KEY = 'm8$^b_8v3frmdc1nk&hjalog*vldqhmzz*%nmd5x0=g7kj9s#f'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'zhang890312@gmail.com'
+EMAIL_HOST_PASSWORD = 'zys890312'
+EMAIL_HOST_PORT = 587
+EMAIL_USE_TLS = True
 
 ALLOWED_HOSTS = []
 

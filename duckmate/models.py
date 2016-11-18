@@ -1,6 +1,8 @@
 from __future__ import unicode_literals
 from django.db import migrations, models
 from django.contrib.auth.models import Permission, User
+from django.utils import timezone
+
 
 class Rental(models.Model):
     user = models.ForeignKey(User,default=1)
@@ -14,7 +16,6 @@ class Rental(models.Model):
     coordinate = models.CharField(max_length=500)
     #pub_date = models.DateTimeField('date published')
     picture = models.FileField(default=None)
-    is_favorite = models.BooleanField(default=False)
     favorite_count = models.IntegerField(default=0)
     male = 'm'
     female = 'f'
@@ -35,6 +36,8 @@ class Rental(models.Model):
     gender = models.CharField(max_length=10, choices=gender_choices)
     student_type = models.CharField(max_length=50, choices=student_type_choices)
     major = models.CharField(max_length=100)
+    timestamp = models.DateTimeField(default=timezone.now, auto_now=False, blank=True)
+    updated = models.DateTimeField(default=timezone.now)
     def __str__(self):
         return self.address
 

@@ -6,24 +6,25 @@
 {% endblock %}
 {% block script %}
     <script src="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script>
+    <script src="{% static 'js/index.js' %}"></script>
 {% endblock %}
 {% block header %}
     {% include 'visitor_header.html' %}
 {% endblock %}
 {% block content %}
     <body>
-    <div class="result-container container-fluid" style="height: 100%">
-    <div class="row" style="height: 100%">
-    <div class="col-sm-8 col-md-8" id="map_container">
+    <div class="result-container container-fluid" style="height: 100%; margin:0; padding:0">
+    <div class="row" style="height: 100%; margin: 0; padding: 0">
+    <div class="col-sm-7 col-md-7" id="map_container">
         <div id="map"></div>
     </div>
-    <div class="col-sm-4 col-md-4" id="result-container">
+    <div class="col-sm-3 col-md-3" id="result-container">
         {% if rentals %}
             {% for rental in rentals %}
                 <!--<div class="col-sm-4 col-lg-2">-->
-                    <div class="thumbnail">
-                        <a href="">
-                            <img src="{{ rental.picture.url }}" class="img-responsive" style="height: 250px; width: 100%">
+                    <div class="thumbnail" style="margin: 0; padding:0">
+                        <a href="{% url 'duckmate:rental_detail' rental.id %}">
+                            <img src="{{ rental.picture.url }}" class="img-responsive" style="height: 250px; width: 100%; margin: 0;padding: 0">
                         </a>
                         <div class="caption">
                             <h5 style="margin:0">{{ rental.address }}</h5>
@@ -31,10 +32,10 @@
                             <span style="margin: 0;text-align: right">  {{ rental.city }}</span>
                             <span class="text-danger"> {{ rental.bedroom }}bed/{{ rental.bathroom }}bath</span>
                             <!-- View Details -->
-                            <a href="" class="btn btn-primary btn-sm" role="button">View Details</a>
+                            <a href="{% url 'duckmate:rental_detail' rental.id %}" class="btn btn-primary btn-sm" role="button">View Details</a>
 
-                            <a href="{% url 'duckmate:favorite' rental.id%}" class="btn btn-default btn-sm btn-favorite" role="button">
-                                <span class="glyphicon glyphicon-star {% if rental.is_favorite %}active{% endif %}"></span>
+                            <a href="{% url 'duckmate:like' rental.id %}" class="btn btn-default btn-sm btn-favorite" role="button">
+                                <span class="glyphicon glyphicon-star"></span>
                             </a>
                             <span>
                             <small id="favorite_count">{{ rental.favorite_count }}</small>
@@ -52,50 +53,6 @@
     </div>
 </div>
     </body>
-    <<script type="text/javascript">
-        (function () {
-            var geoData = {{ geoData|safe }};
-            var lat = [];
-            var lng = [];
-            for (var i = 0; i < geoData.features.length; i++) {
-                lat.push(geoData.features[i].geometry.coordinates[0]);
-                lng.push(geoData.features[i].geometry.coordinates[1]);
-            }
-            var latMiddle = (Math.max.apply(null, lat) + Math.min.apply(null, lat)) / 2;
-            var lngMiddle = (Math.max.apply(null, lng) + Math.min.apply(null, lng)) / 2;
-            var mytiles = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-            });
-            // Initialise an empty map
-            var map = L.map('map')
 
-            map.addLayer(mytiles).setView([latMiddle, lngMiddle], 14);
-            for (var i = 0; i < geoData.features.length; i++) {
-                L.marker(geoData.features[i].geometry.coordinates)
-                        .bindPopup("<div class='caption'><h4 style='margin-bottom:10px'>$<span class='text-danger'>" +
-                                geoData.features[i].properties.price + "</span></h4></div><img src=" +
-                                geoData.features[i].properties.picture
-                                + " style='width:175px; height:125px;' class='img-rounded'/><div class='caption'><h4 style='margin:0;'>"
-                                + geoData.features[i].properties.address
-                                + "</h4><span class='text-primary' style='margin: 0;text-align: left'><h4>"
-                                + geoData.features[i].properties.city + "</h4></span></div>")
-                        .addTo(map)
-                        .on('mouseover', function (e) {
-                            this.openPopup();
-                        })
-                        .on('mouseout', function (e) {
-                            this.closePopup();
-                        })
-                        .on('click', function (e) {
-                            this.off('mouseout');
-                            this.openPopup();
-                        })
-            }
-            $('input:text').focus(
-                    function () {
-                        $(this).val('');
-                    }
-            );
-        })(jQuery);
-     </script>
+
 {% endblock %}
