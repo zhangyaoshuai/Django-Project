@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}Rentals{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css" />
+{% endblock %}
+{% block script %}
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script>
+    <script src="{% static 'js/rentals.js' %}"></script>
+{% endblock %}
+{% block header %}
+    {% include 'header.html' %}
+{% endblock %}
+{% block content %}
+    <body>
+    <div class="result-container container-fluid" style="height: 100%; margin:0; padding:0">
+    <div class="row" style="height: 100%; margin: 0; padding: 0">
+    <div class="col-sm-7 col-md-7" id="map_container">
+        <div id="map"></div>
+    </div>
+    <div class="col-sm-3 col-md-3" id="result-container">
+        {% if rentals %}
+            {% for rental in rentals %}
+                <!--<div class="col-sm-4 col-lg-2">-->
+                    <div class="thumbnail" style="margin: 0; padding:0">
+                        <a href="{% url 'duckmate:rental_detail' rental.id %}">
+                            <img src="{{ rental.picture.url }}" class="img-responsive" style="height: 250px; width: 100%; margin: 0;padding: 0">
+                        </a>
+                        <div class="caption">
+                            <h5 style="margin:0"> <span class="text-primary" style="margin: 0;text-align: left">${{ rental.price }}</span> {{ rental.address }}</h5>
+                            <span style="margin: 0;text-align: right"> {{ rental.city }}</span>
+                            <span class="text-danger"> {{ rental.bedroom }}bed/{{ rental.bathroom }}bath</span>
+                            <!-- View Details -->
+                            <a href="{% url 'duckmate:rental_detail' rental.id %}" class="btn btn-primary btn-sm" role="button">View Details</a>
+
+                            <a href="{% url 'duckmate:like' rental.id %}" class="btn btn-default btn-sm btn-favorite" role="button">
+                                <span class="glyphicon glyphicon-star"></span>
+                            </a>
+                            <span>
+                            <small id="favorite_count">{{ rental.favorite_count }}</small>
+                            </span>
+                            <small style="text-align: right" class="text-primary pull-right">{% if rental.timestamp %}{{ rental.timestamp }}{% endif %}</small>
+
+                            <!-- Favorite Album -->
+
+                        </div>
+                    </div>
+
+            {% endfor %}
+        {% endif %}
+
+    </div>
+    </div>
+</div>
+    </body>
+
+
+{% endblock %}

@@ -30,7 +30,7 @@
             <!--      Wizard container        -->
             <div class="wizard-container">
                 <div class="card wizard-card ct-wizard-green" id="wizard">
-                <form method="post" action="{% url 'duckmate:create_rental' %}" enctype="multipart/form-data">
+                <form method="post" action="{% url 'duckmate:create_rental' user.id %}" enctype="multipart/form-data">
                     {% csrf_token %}
                 <!--        You can switch "ct-wizard-azzure"  with one of the next bright colors: "ct-wizard-blue", "ct-wizard-green", "ct-wizard-orange", "ct-wizard-red"             -->
 

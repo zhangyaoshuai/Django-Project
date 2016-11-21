@@ -14,28 +14,36 @@
         <!-- Items -->
         <div class="collapse navbar-collapse" id="topNavBar">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="{% url 'duckmate:index' %}"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp; Rentals</a></li>
+                <li><a href="{% url 'duckmate:rentals' %}"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp; Rentals</a></li>
             </ul>
 
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <a href="{% url 'duckmate:create_rental' %}">
+                    <a href="{% if user.id %}{% url 'duckmate:create_rental' user.id %}{% else %}{% url 'duckmate:log_in' %}{% endif %}">
                         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp; Add Rentals
                     </a>
                 </li>
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">{{ user.username }}
-                        <span class="caret"></span></a>
-                    <ul class="dropdown-menu" style="border-radius: 6px">
-                        <li>
-                            <a href=""><span class="glyphicon glyphicon-user" aria-hidden="true"></span> My Account</a>
-                        </li>
-                        <li><a href="{% url 'duckmate:log_out' %}">
-                        <span class="glyphicon glyphicon-off" aria-hidden="true"></span> Log out
+                {% if user.username %}
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">{{ user.username }}
+                            <span class="caret"></span></a>
+                        <ul class="dropdown-menu" style="border-radius: 6px">
+                            <li>
+                                <a href=""><span class="glyphicon glyphicon-user" aria-hidden="true"></span> My Account</a>
+                            </li>
+                            <li><a href="{% url 'duckmate:log_out' %}">
+                            <span class="glyphicon glyphicon-off" aria-hidden="true"></span> Log out
+                            </a>
+                            </li>
+                        </ul>
+                    </li>
+                {% else %}
+                     <li>
+                        <a href="{% url 'duckmate:log_in' %}">
+                        <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span> Log in
                         </a>
-                        </li>
-                    </ul>
-                </li>
+                    </li>
+                {% endif %}
             </ul>
         </div>
 

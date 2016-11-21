@@ -2,10 +2,11 @@
 {% load staticfiles %}
 {% block title %}{{ rental.address }}{% endblock %}
 {% block css %}{% endblock %}
-{% block script %}{% endblock %}
+{% block script %}
+{% endblock %}
 
 {% block header %}
-    {% include 'header_2.html' %}
+    {% include 'detail_header.html' %}
 {% endblock %}
 {% block content %}
     <div class="container-fluid songs-container">
@@ -16,7 +17,7 @@
         <div class="col-sm-4 col-md-3">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <a href="{% url 'duckmate:rental_detail' rental.id %}">
+                    <a href="#">
                         {% if rental.picture %}
                             <img src="{{ rental.picture.url }}" class="img-responsive" style="width: 100%;height: 200px;">
                         {% else %}
