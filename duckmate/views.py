@@ -23,6 +23,8 @@ def rentals(request):
 
     return render(request, 'rentals.html', {'rentals': rentals})
 
+
+#return jsaon response for ajax request
 @csrf_exempt
 def getRentals(request):
     rentals = Rental.objects.all()
@@ -96,6 +98,8 @@ def log_out(request):
     logout(request)
     return redirect('/')
 
+
+#favorite method
 def like(request, rental_id):
     if not request.user.is_authenticated():
         return render(request, 'login.html')
@@ -109,6 +113,7 @@ def like(request, rental_id):
         else:
             return JsonResponse({'success': True})
 
+#unlike method
 def unlike(request, rental_id):
     if not request.user.is_authenticated():
         return render(request, 'login.html')
@@ -122,6 +127,7 @@ def unlike(request, rental_id):
         else:
             return JsonResponse({'success': True})
 
+#create rental method
 def create_rental(request, user_id):
     if not request.user.is_authenticated():
         return render(request, 'login.html')
@@ -160,6 +166,7 @@ def create_rental(request, user_id):
         return render(request, 'create_rental.html')
 
 
+#rental detail method
 def rental_detail(request, rental_id):
     rental = get_object_or_404(Rental, pk=rental_id)
     return render(request, 'rental_detail.html', {'rental': rental, 'rental_id': rental_id})
