@@ -20,6 +20,7 @@ def index(request):
 
 def rentals(request):
     rentals = Rental.objects.all()
+
     return render(request, 'rentals.html', {'rentals': rentals})
 
 @csrf_exempt

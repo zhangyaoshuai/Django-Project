@@ -1,6 +1,7 @@
 $(document).ready(function() {
 
     //global variable:
+    var dump = [];
     var response = [];
 
     //initialize map:
@@ -17,6 +18,7 @@ $(document).ready(function() {
         type: 'get', // This is the default though, you don't actually need to always mention it
         success: function(data) {
             response = data.features;//json data from backend
+            dump = response;
             showMap(response, markers, map);
 
         },
@@ -27,7 +29,8 @@ $(document).ready(function() {
     //sort by price low to high:
     $("#priceLowToHigh").click(function () {
         sortedData = priceLowToHigh(response);
-        var div = $('<div>').attr('id', 'result-container');
+        var div = $('<div>').attr({'class': 'col-sm-3 col-md-3',
+                                    'id': 'result-container'});
         for (var i = 0; i < sortedData.length; i++) {
             createDiv(div, sortedData, i);
         }
@@ -39,7 +42,8 @@ $(document).ready(function() {
     //sort by price high to low:
     $("#priceHighToLow").click(function () {
         sortedData = priceHighToLow(response);
-        var div = $('<div>').attr('id', 'result-container');
+        var div = $('<div>').attr({'class': 'col-sm-3 col-md-3',
+                                    'id': 'result-container'});
         for (var i = 0; i < sortedData.length; i++) {
             createDiv(div, sortedData, i);
         }
@@ -50,7 +54,8 @@ $(document).ready(function() {
     //sort by time created:
     $("#newest").click(function () {
         sortedData = newest(response);
-        var div = $('<div>').attr('id', 'result-container');
+        var div = $('<div>').attr({'class': 'col-sm-3 col-md-3',
+                                    'id': 'result-container'});
         for (var i = 0; i < sortedData.length; i++) {
             createDiv(div, sortedData, i);
         }
@@ -59,6 +64,7 @@ $(document).ready(function() {
 
     //filter by price:
     $("#searchPrice").click(function () {
+        response = dump;
         var min_price = $("#min_price").val();
         console.log(min_price);
         var max_price = $("#max_price").val();
@@ -69,7 +75,8 @@ $(document).ready(function() {
             max_price = 5000;
         }
         var result = [];
-        var div = $('<div>').attr('id', 'result-container');
+        var div = $('<div>').attr({'class': 'col-sm-3 col-md-3',
+                                    'id': 'result-container'});
         for (var i=0; i<response.length; i++) {
             if(response[i].price>=min_price && response[i].price<=max_price) {
                 result.push(response[i]);
@@ -78,6 +85,7 @@ $(document).ready(function() {
         }
         showMap(result, markers, map);
         $("#result-container").replaceWith(div);
+        response = result;
     });
 
     //search by key word:
@@ -96,16 +104,19 @@ $(document).ready(function() {
             success: function (data) {
                 var result = data.features;
                 response = result;
+                dump = response;
                 showMap(result, markers, map);
                 if (result.length>0) {
-                    var div = $('<div>').attr('id', 'result-container');
+                    var div = $('<div>').attr({'class': 'col-sm-3 col-md-3',
+                                    'id': 'result-container'});
                     for (var i = 0; i < result.length; i++) {
                         createDiv(div, result, i);
                     }
                     $("#result-container").replaceWith(div);
                 }
                 else {
-                    var div = $('<div>').attr('id','result-container');
+                    var div = $('<div>').attr({'class': 'col-sm-3 col-md-3',
+                                    'id': 'result-container'});
                     div.append("<h3 class='text-danger'><p style='text-align: center'>No results</p></h3>");
                     $("#result-container").replaceWith(div);
                 }
@@ -119,7 +130,15 @@ $(document).ready(function() {
 	});
 
     //like button on click:
-    doLike.init();
+    $('.btn-favorite').on('click', function(e) {
+			e.preventDefault();
+			var url = $(this).attr('href');
+			$.getJSON(url, function(result) {
+				if (result.success) {
+					$('.glyphicon-star', self).toggleClass('active');
+				}
+			});
+		});
 
 });
 
@@ -164,11 +183,11 @@ function showMap(response, markers, map) {
 
 //create html element:
 function createDiv(div, sortedData, i) {
-    div.append("<div class='thumbnail' style='margin: 0; padding: 0'><a href="+
-        sortedData[i].id+'/rental_detail/'+"><img class='image-responsive' src=" +
-        sortedData[i].picture + " style='height: 250px; width: 100%; margin: 0; padding: 0'/></a>" +
-        "<div class='caption'><h5 style='margin:0'>" +
-        sortedData[i].price + " <span class='text-primary' style='margin: 0;text-align: left'>$" +
+    div.append("<div class='panel panel-default' style='margin: 0; padding: 0;'><div class='panel panel-heading' style='margin: 0; padding: 0; height: 40px;'><h4 class='text-danger' style='margin-left: 15px'>$"+
+        sortedData[i].price +"</h4></div><div class='panel panel-body' style='margin: 0; padding: 0;'>" +
+        "<a href="+sortedData[i].id+'/rental_detail/'+"><img src=" +
+        sortedData[i].picture + " style='height: 250px; width: 100%; margin: 0; padding: 0'>" +
+        "</a></div><div class='panel panel-footer' style='margin: 0; padding: 0;'><h5 style='margin:0'> <span class='text-primary' style='margin: 0;text-align: left'>" +
         sortedData[i].address + "</span></h5> <span style='margin: 0;text-align: right'>" +
         sortedData[i].city + "</span> <span class='text-danger'>" +
         sortedData[i].bedroom + "bed/" +
@@ -176,7 +195,8 @@ function createDiv(div, sortedData, i) {
         sortedData[i].id +'/rental_detail/' +" class='btn btn-primary btn-sm' role='button'>View Details</a> <a href="+
         sortedData[i].id +'/like/' +" class='btn btn-default btn-sm btn-favorite' role='button'><span class='glyphicon glyphicon-star'></span></a> <span><small>"+
         sortedData[i].favorite_count +"</small></span><small class='pull-right text-primary'>"+
-        sortedData[i].time_created +"</small><div>")
+        sortedData[i].time_created +"</small>" +
+        "</div></div>")
 }
 
 function priceLowToHigh(rentals) {
@@ -195,32 +215,7 @@ function priceHighToLow(rentals) {
 
 function newest(rentals) {
     rentals.sort(function(a,b){
-        return a.time_created - b.time_created;
+        return new Date(a.dateTime) - new Date(b.dateTime);
     });
     return rentals;
 }
-
-
-//function for 'like' event:
-var doLike = {
-	init: function() {
-		this.$container = $('.result-container');
-		this.bindEvents();
-	},
-
-	bindEvents: function() {
-		$('.btn-favorite', this.$container).on('click', function(e) {
-			e.preventDefault();
-			var self = $(this);
-			var url = $(this).attr('href');
-			$.getJSON(url, function(result) {
-				if (result.success) {
-					$('.glyphicon-star', self).toggleClass('active');
-
-				}
-			});
-
-			return false;
-		});
-	}
-};
