@@ -15,21 +15,18 @@
     {% block css %}
     {% endblock %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
-    <!-- Latest compiled and minified CSS -->
-
     <script src="{% static 'js/jquery-3.1.1.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.2/js/bootstrap-select.min.js"></script>
-    {% block script %}
-    {% endblock %}
-    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://npmcdn.com/react@15.3.1/dist/react.min.js"></script>
+    <script src="https://npmcdn.com/react-dom@15.3.1/dist/react-dom.min.js"></script>
 
 </head>
-
 {% block header %}
 {% endblock %}
 {% block content %}
 {% endblock %}
 {% include 'footer.html' %}
-
+{% block script %}
+{% endblock %}
 </html>

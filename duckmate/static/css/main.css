@@ -88,3 +88,14 @@ body {
 .dropdown-menu > a {
     text-decoration: none;
 }
+
+label.error {
+    color: #FF3B30;
+    box-shadow: none;
+    border-color: #FF3B30;
+    margin-top: 5px;
+    margin-bottom: 0;
+}
+label {
+    font-weight: 400;
+}

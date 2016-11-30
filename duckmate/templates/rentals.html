@@ -6,7 +6,7 @@
 {% endblock %}
 {% block script %}
     <script src="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script>
-    <script src="{% static 'js/rentals.js' %}"></script>
+    <script src="{% static 'js/rentals.js' %}" type="text/javascript"></script>
 {% endblock %}
 {% block header %}
     {% include 'header.html' %}
@@ -22,22 +22,29 @@
         {% if rentals %}
             {% for rental in rentals %}
                 <!--<div class="col-sm-4 col-lg-2">-->
-                    <div class="thumbnail" style="margin: 0; padding:0">
+                <div class="row">
+                    <div class="panel panel-default" style="margin: 0; padding:0">
+                    <div class="panel-heading">
+                        <h4 class="text-primary">${{ rental.price }}</h4>
+                    </div>
+                    <div class="panel-body">
                         <a href="{% url 'duckmate:rental_detail' rental.id %}">
                             <img src="{{ rental.picture.url }}" class="img-responsive" style="height: 250px; width: 100%; margin: 0;padding: 0">
                         </a>
-                        <div class="caption">
-                            <h5 style="margin:0"> <span class="text-primary" style="margin: 0;text-align: left">${{ rental.price }}</span> {{ rental.address }}</h5>
+                    </div>
+
+                        <div class="panel-footer">
+                            <h5 style="margin:0"> {{ rental.address }}</h5>
                             <span style="margin: 0;text-align: right"> {{ rental.city }}</span>
                             <span class="text-danger"> {{ rental.bedroom }}bed/{{ rental.bathroom }}bath</span>
                             <!-- View Details -->
                             <a href="{% url 'duckmate:rental_detail' rental.id %}" class="btn btn-primary btn-sm" role="button">View Details</a>
 
-                            <a href="{% url 'duckmate:like' rental.id %}" class="btn btn-default btn-sm btn-favorite" role="button">
+                            <a name="{{ rental.id}}" class="btn btn-default btn-sm btn-favorite" role="button">
                                 <span class="glyphicon glyphicon-star"></span>
                             </a>
                             <span>
-                            <small id="favorite_count">{{ rental.favorite_count }}</small>
+                            <small class="favorite_count">{{ rental.total_likes }}</small>
                             </span>
                             <small style="text-align: right" class="text-primary pull-right">{% if rental.timestamp %}{{ rental.timestamp }}{% endif %}</small>
 
@@ -45,7 +52,7 @@
 
                         </div>
                     </div>
-
+                </div>
             {% endfor %}
         {% endif %}
 

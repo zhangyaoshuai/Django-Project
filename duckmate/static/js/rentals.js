@@ -117,7 +117,7 @@ $(document).ready(function() {
                 else {
                     var div = $('<div>').attr({'class': 'col-sm-3 col-md-3',
                                     'id': 'result-container'});
-                    div.append("<h3 class='text-danger'><p style='text-align: center'>No results</p></h3>");
+                    div.append("<div class='alert alert-warning'><p style='text-align: center'><strong>No results</strong></p></div>");
                     $("#result-container").replaceWith(div);
                 }
             }
@@ -130,15 +130,23 @@ $(document).ready(function() {
 	});
 
     //like button on click:
-    $('.btn-favorite').on('click', function(e) {
-			e.preventDefault();
-			var url = $(this).attr('href');
-			$.getJSON(url, function(result) {
-				if (result.success) {
-					$('.glyphicon-star', self).toggleClass('active');
-				}
-			});
-		});
+    $('.btn-favorite').click(function(){
+        $.ajax({
+            type: "POST",
+            url: '../like/',
+            data: {'id': $(this).attr('name')},
+            csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+            dataType: "json",
+            success: function(response) {
+                alert(response.message);
+                alert('Rental likes count is now ' + response.likes_count);
+                $(this).children('.glyphicon-star').toggleClass('active');
+            },
+            error: function(rs, e) {
+                alert("error");
+            }
+        });
+    })
 
 });
 
@@ -181,24 +189,25 @@ function showMap(response, markers, map) {
 
 }
 
+
 //create html element:
 function createDiv(div, sortedData, i) {
-    div.append("<div class='panel panel-default' style='margin: 0; padding: 0;'><div class='panel panel-heading' style='margin: 0; padding: 0; height: 40px;'><h4 class='text-danger' style='margin-left: 15px'>$"+
-        sortedData[i].price +"</h4></div><div class='panel panel-body' style='margin: 0; padding: 0;'>" +
+    div.append("<div class='panel panel-default' style='margin: 0; padding: 0;'><div class='panel-heading'><h4 class='text-primary'>$"+
+        sortedData[i].price +"</h4></div><div class='panel-body'>" +
         "<a href="+sortedData[i].id+'/rental_detail/'+"><img src=" +
         sortedData[i].picture + " style='height: 250px; width: 100%; margin: 0; padding: 0'>" +
-        "</a></div><div class='panel panel-footer' style='margin: 0; padding: 0;'><h5 style='margin:0'> <span class='text-primary' style='margin: 0;text-align: left'>" +
+        "</a></div><div class='panel-footer'><h5 style='margin:0'> <span class='text-primary' style='margin: 0;text-align: left'>" +
         sortedData[i].address + "</span></h5> <span style='margin: 0;text-align: right'>" +
         sortedData[i].city + "</span> <span class='text-danger'>" +
         sortedData[i].bedroom + "bed/" +
         sortedData[i].bathroom + "bath</span></span> <a href="+
-        sortedData[i].id +'/rental_detail/' +" class='btn btn-primary btn-sm' role='button'>View Details</a> <a href="+
-        sortedData[i].id +'/like/' +" class='btn btn-default btn-sm btn-favorite' role='button'><span class='glyphicon glyphicon-star'></span></a> <span><small>"+
+        sortedData[i].id +'/rental_detail/' +" class='btn btn-primary btn-sm' role='button'>View Details</a><a name="+
+        sortedData[i].id +" class='btn btn-default btn-sm btn-favorite' role='button'><span class='glyphicon glyphicon-star'></span></a> <span><small>"+
         sortedData[i].favorite_count +"</small></span><small class='pull-right text-primary'>"+
         sortedData[i].time_created +"</small>" +
         "</div></div>")
-}
 
+}
 function priceLowToHigh(rentals) {
     rentals.sort(function (a, b) {
         return parseFloat(a.price) - parseFloat(b.price);
