@@ -1,9 +1,9 @@
 from __future__ import unicode_literals
+import PIL as pl # for future use of editing user profile picture
 from django.db import models
 from django.contrib.auth.models import Permission, User
 from django.template.defaultfilters import slugify
 from django.utils import timezone
-
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, related_name='profile')
@@ -12,10 +12,18 @@ class UserProfile(models.Model):
     def __str__(self):
           return "%s's profile" % self.user
 
+'''
+class Contact(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
+    phone_number = models.BigIntegerField(default=0)
+    email = models.EmailField(max_length=250)
+'''
+
 class Rental(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
     slug = models.SlugField(default="")
     likes = models.ManyToManyField(User, related_name='likes')
+    #contact = models.ManyToManyField(Contact, related_name='contact')
     @property
     def total_likes(self):
         """
@@ -28,6 +36,8 @@ class Rental(models.Model):
         super(Rental, self).save(*args, **kwargs)
     title = models.CharField(max_length=100)
     description = models.TextField()
+    phone_number = models.BigIntegerField(default=0)
+    email = models.EmailField(max_length=250)
     address = models.CharField(max_length=500)
     city = models.CharField(max_length=50)
     price = models.IntegerField()
@@ -49,8 +59,6 @@ class Rental(models.Model):
         (male, 'male'),
         (female, 'female'),
     )
-    phone_number = models.BigIntegerField(default=0)
-    email = models.EmailField(max_length=250)
     gender = models.CharField(max_length=10, choices=gender_choices)
     student_type = models.CharField(max_length=50, choices=student_type_choices)
     major = models.CharField(max_length=100)
@@ -60,5 +68,9 @@ class Rental(models.Model):
 
     def __str__(self):
         return self.address
+
+
+
+
 
 

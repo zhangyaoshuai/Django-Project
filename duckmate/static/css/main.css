@@ -1,15 +1,18 @@
-body .image-container {
+.image-container {
+    height: 100%;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
-    background-size: cover;
+    background-size:cover;
     background-repeat:no-repeat;
-    background-size:100%;
-    background: white;
+    background-position:center center;
 }
 
-.thumbnail > image {
-    max-height: 150px;
+.panel-body img {
+    margin:0;
+    padding:0;
+    height:auto;
+    max-height:200px;
 }
 
 .dropdown:hover .dropdown-menu {
@@ -29,9 +32,37 @@ ul.errorlist > li {
 .navbar {
     border-radius: 0;
 }
+.navbar-custom .icon-bar {
+	background-color:#fff;
+}
+
+.navbar-custom {
+	background-color: #F9F9F9;
+    color:#fff;
+}
+
+.navbar-custom li>a:hover,.navbar-custom li>a:focus {
+	background-color: #5BC0DE;
+}
+.navbar-brand:hover {
+    color:#F9F9F9;
+    background-color: #5BC0DE;
+}
+.navbar-custom .dropdown > a{
+
+}
+.navbar-nav > li > a {
+
+}
 
 .navbar-brand {
-    font-family: 'Satisfy', cursive;
+
+}
+.navbar-custom .form-control:focus {
+	border-color: #5BC0DE;
+	outline: 0;
+	-webkit-box-shadow: inset 0 0 0;
+	box-shadow: inset 0 0 0;
 }
 
 .glyphicon-star {
@@ -43,42 +74,48 @@ ul.errorlist > li {
     color: #FDB230;
 }
 #result-container {
-    margin-right: 0;
-    margin-top: 0;
-    padding: 0;
-    width:40%;
+    margin: 0;
+    width:25%;
     height:100%;
     max-height:600px;
-    min-width: 100px;
+    min-width: 80px;
     overflow-y:scroll;
     position:relative;
 	}
-
+.panel-default {
+    height: auto;
+}
+#side_container {
+    margin:0;
+    width:20%;
+    height:100%;
+    max-height: 600px;
+    overflow-y:scroll;
+    position:relative;
+}
 #map {
-    margin-top: 0;
-    margin-left: 0;
+    margin: 0;
     padding: 0;
     width:100%;
     height:100%;
     max-height: 600px;
     min-width: 120px;
     min-height: 100px;
-    border-radius: 6px;
+    border-radius: 0;
     position: absolute;
 }
 #map_container {
-    margin-top:0;
-    margin-left:0;
-    padding:0;
-    height:100%;
-    width:60%;
-    position:relative;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 55%;
+    position: relative;
 }
-html {
+html, body {
     height: 100%;
 }
 body {
-    height: 100%;
+    padding-top:50px; /*padding for navbar*/
 }
 
 .navbar {

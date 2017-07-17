@@ -58,6 +58,7 @@ $(function(){
 		}
 		init();
 	});
+
 	$("#login").validate({
         rules :{
             username: {

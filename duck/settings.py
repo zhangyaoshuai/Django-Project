@@ -31,7 +31,7 @@ ALLOWED_HOSTS = []
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'zhangyaoshuai0312@gmail.com.com'
+EMAIL_HOST_USER = 'zhangyaoshuai0312@gmail.com'
 EMAIL_HOST_PASSWORD = 'zys890312'
 EMAIL_USER_TLS = True
 
@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'duckmate',
+    'crispy_forms',
+    'widget_tweaks',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -63,7 +65,7 @@ ROOT_URLCONF = 'duck.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'duckmate/migrations/templates')]
+        'DIRS': [os.path.join(BASE_DIR, 'duckmate/templates')]
         ,
         'APP_DIRS': True,
         'OPTIONS': {
@@ -93,7 +95,18 @@ DATABASES = {
         'PORT': '3306',
     }
 }
-
+'''
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'duckmate',
+        'USER': 'postgre',
+        'PASSWORD': '123456',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
+}
+'''
 
 
 # Password validation
@@ -136,5 +149,5 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'duckmate', 'static'),
 )
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'duckmate', 'static', 'media')
 MEDIA_URL = '/media/'

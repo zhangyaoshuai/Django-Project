@@ -1,5 +1,6 @@
-<nav class="navbar navbar-inverse">
-    <div class="container-fluid" style="margin: 0; padding: 0">
+{% load staticfiles %}
+<nav class="navbar navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
 
         <!-- Header -->
         <div class="navbar-header">
@@ -14,9 +15,9 @@
         <!-- Items -->
         <div class="collapse navbar-collapse" id="topNavBar">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="{% url 'duckmate:rentals' %}"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp; Rentals</a></li>
+                <li><a href="{% url 'duckmate:rentals' %}"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp; Rentals</a></li>
             </ul>
-            <form class="navbar-form navbar-left" id="searchForm" role="search">
+            <form class="navbar-form navbar-left" id="searchForm" role="search" name="query" action="{% url 'duckmate:rentals' %}" method="post">
                 {% csrf_token %}
                 <div class="form-group">
                     <input type="text" class="form-control" id="query" name="query">
@@ -27,8 +28,8 @@
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Price
                     <span class="caret"></span></a>
-							<ul class="dropdown-menu" style="border-radius: 6px">
-								<li class="list-group-item" style="margin-left:15px"><label style="color: grey">min</label>
+							<ul class="dropdown-menu" style="border-radius: 5px;">
+								<li><label style="color: grey">min</label>
 									<div class="input-group">
 										<span class="input-group-addon"><i
 											class="fa fa-dollar fa" aria-hidden="true"></i></span> <input
@@ -36,7 +37,7 @@
 											id="min_price" style="width: auto; max-width: 80px" value="0"
 											required />
 									</div></li>
-								<li class="list-group-item" style="margin-left: 15px"><label style="color: grey">max</label>
+								<li><label style="color: grey">max</label>
 									<div class="input-group">
 										<span class="input-group-addon"><i
 											class="fa fa-dollar fa" aria-hidden="true"></i></span> <input
@@ -44,7 +45,7 @@
 											id="max_price" style="width:auto; max-width: 80px"
 											value="5000" required />
 									</div></li>
-                                <li class="list-group-item">
+                                <li>
                                     <button type="button" class="btn btn-default" id="searchPrice">Search</button>
                                 </li>
 							</ul>
@@ -53,10 +54,10 @@
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">Filter
                         <span class="caret"></span></a>
-							<ul class="dropdown-menu" style="border-radius: 6px">
-                                <a href="#"><li class="list-group-item" id="priceLowToHigh" style="margin-top: 0">Lowest price</li></a>
-                                <a href="#"><li class="list-group-item" id="priceHighToLow">Highest price</li></a>
-                                <a href="#"><li class="list-group-item" id="newest" style="margin-bottom: 0">Time created</li></a>
+							<ul class="dropdown-menu" style="border-radius: 5px">
+                                <li><a href="#" id="priceLowToHigh">Lowest price</a></li>
+                                <li><a href="#" id="priceHighToLow">Highest price</a></li>
+                                <li><a href="#" id="newest">Time created</a></li>
 							</ul>
                 </li>
                 <li>
@@ -65,19 +66,19 @@
                     </a>
                 </li>
                 {% if user.username %}
-                    <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">{{ user.username }}
-                            <span class="caret"></span></a>
-                        <ul class="dropdown-menu" style="border-radius: 6px">
-                            <li>
-                                <a href=""><span class="glyphicon glyphicon-user" aria-hidden="true"></span> My Account</a>
-                            </li>
-                            <li><a href="{% url 'duckmate:log_out' %}">
-                            <span class="glyphicon glyphicon-off" aria-hidden="true"></span> Log out
-                            </a>
-                            </li>
-                        </ul>
-                    </li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">{{ user.username }}
+                        <span class="caret"></span></a>
+                    <ul class="dropdown-menu" style="border-radius: 6px">
+                        <li>
+                            <a href="{% url 'duckmate:account' user.id %}"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> My Account</a>
+                        </li>
+                        <li><a href="{% url 'duckmate:log_out' %}">
+                        <span class="glyphicon glyphicon-off" aria-hidden="true"></span> Log out
+                        </a>
+                        </li>
+                    </ul>
+                </li>
                 {% else %}
                      <li>
                         <a href="{% url 'duckmate:log_in' %}">
@@ -90,3 +91,5 @@
 
     </div>
 </nav>
+
+

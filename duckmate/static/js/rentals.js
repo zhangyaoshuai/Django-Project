@@ -1,9 +1,9 @@
-$(document).ready(function() {
 
+$(document).ready(function() {
     //global variable:
     var dump = [];
     var response = [];
-
+    /*
     //initialize map:
     var map = L.map('map');
     var mytiles = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
@@ -11,15 +11,16 @@ $(document).ready(function() {
     });
     map.addLayer(mytiles);
     var markers = new L.LayerGroup().addTo(map);
-
-    //asyncronously getting backend json data from url: showIndex
+    */
+    //asyncronously getting backend json data from url: /getRentals/
     $.ajax({
         url: '../getRentals/',
         type: 'get', // This is the default though, you don't actually need to always mention it
         success: function(data) {
-            response = data.features;//json data from backend
+            //on success to pass data to global variable
+            response = data;
             dump = response;
-            showMap(response, markers, map);
+            //showMap(response, markers, map);
 
         },
         failure: function(data) {
@@ -28,45 +29,31 @@ $(document).ready(function() {
     });
     //sort by price low to high:
     $("#priceLowToHigh").click(function () {
+        //sort
         sortedData = priceLowToHigh(response);
-        var div = $('<div>').attr({'class': 'col-sm-3 col-md-3',
-                                    'id': 'result-container'});
-        for (var i = 0; i < sortedData.length; i++) {
-            createDiv(div, sortedData, i);
-        }
-        $("#result-container").replaceWith(div);
-
-
+        //replace html element with new sorted element
+        createDiv(sortedData);
+        //update map
+        showMap(response, markers, map);
     });
 
     //sort by price high to low:
     $("#priceHighToLow").click(function () {
         sortedData = priceHighToLow(response);
-        var div = $('<div>').attr({'class': 'col-sm-3 col-md-3',
-                                    'id': 'result-container'});
-        for (var i = 0; i < sortedData.length; i++) {
-            createDiv(div, sortedData, i);
-        }
-        $("#result-container").replaceWith(div);
-
-
+        createDiv(sortedData);
+        showMap(response, markers, map);
     });
     //sort by time created:
     $("#newest").click(function () {
         sortedData = newest(response);
-        var div = $('<div>').attr({'class': 'col-sm-3 col-md-3',
-                                    'id': 'result-container'});
-        for (var i = 0; i < sortedData.length; i++) {
-            createDiv(div, sortedData, i);
-        }
-        $("#result-container").replaceWith(div);
+        createDiv(sortedData);
+        showMap(response, markers, map);
     });
 
     //filter by price:
     $("#searchPrice").click(function () {
         response = dump;
         var min_price = $("#min_price").val();
-        console.log(min_price);
         var max_price = $("#max_price").val();
         if(min_price == '') {
             min_price = 0;
@@ -75,16 +62,15 @@ $(document).ready(function() {
             max_price = 5000;
         }
         var result = [];
-        var div = $('<div>').attr({'class': 'col-sm-3 col-md-3',
-                                    'id': 'result-container'});
         for (var i=0; i<response.length; i++) {
             if(response[i].price>=min_price && response[i].price<=max_price) {
                 result.push(response[i]);
-                createDiv(div, response, i);
             }
         }
+        //dynamically update html element
+        createDiv(result);
         showMap(result, markers, map);
-        $("#result-container").replaceWith(div);
+        //pass filterd value to global variable
         response = result;
     });
 
@@ -102,35 +88,29 @@ $(document).ready(function() {
             csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
 
             success: function (data) {
-                var result = data.features;
+                var result = data;
+                //pass result to global variable
                 response = result;
                 dump = response;
+                //update map
                 showMap(result, markers, map);
                 if (result.length>0) {
-                    var div = $('<div>').attr({'class': 'col-sm-3 col-md-3',
-                                    'id': 'result-container'});
-                    for (var i = 0; i < result.length; i++) {
-                        createDiv(div, result, i);
-                    }
-                    $("#result-container").replaceWith(div);
+                    createDiv(result)
                 }
+
+                //for empty result
                 else {
                     var div = $('<div>').attr({'class': 'col-sm-3 col-md-3',
                                     'id': 'result-container'});
-                    div.append("<div class='alert alert-warning'><p style='text-align: center'><strong>No results</strong></p></div>");
+                    div.append("<div class='row'><div class='alert alert-warning' style='margin: 0;'><p style='text-align: center'><strong>No results</strong></p></div></div>");
                     $("#result-container").replaceWith(div);
                 }
             }
         })
     });
 
-    //click on input field to clear it:
-    $("input").focus(function () {
-		$(this).val('');
-	});
-
-    //like button on click:
-    $('.btn-favorite').click(function(){
+    //'like' method on a rental:
+    $('body').on('click', 'a.btn-favorite', function(){
         $.ajax({
             type: "POST",
             url: '../like/',
@@ -138,9 +118,14 @@ $(document).ready(function() {
             csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
             dataType: "json",
             success: function(response) {
-                alert(response.message);
-                alert('Rental likes count is now ' + response.likes_count);
-                $(this).children('.glyphicon-star').toggleClass('active');
+                //change number showing total likes
+                $(this).next().children().html(response.likes_count);
+                if(response.success) {
+                    $(this).children('.glyphicon-star').toggleClass('active');
+                }
+                else  {
+                    $(this).children('.glyphicon-star').removeClass('active');
+                }
             },
             error: function(rs, e) {
                 alert("error");
@@ -150,9 +135,15 @@ $(document).ready(function() {
 
 });
 
-
-//generate openstreetmap using leaflet.js:
+// specify popup options
+var customOptions = {
+    "maxHeight": '200',
+    'maxWidth': '250',
+    'className' : 'custom-popup'
+};
+//generate openStreetMap using leaflet.js:
 function showMap(response, markers, map) {
+    //clear previous markers
     markers.clearLayers();
     var lat = [];
     var lng = [];
@@ -167,13 +158,13 @@ function showMap(response, markers, map) {
         map.setView([latMiddle, lngMiddle], 14);
         for (var i = 0; i < response.length; i++) {
             L.marker(response[i].coordinate)
-                .bindPopup("<div class='caption'><h4 style='margin-bottom:10px'>$<span class='text-danger'>" +
-                    response[i].price + "</span></h4></div><a href="+
+                .bindPopup("<div class='panel panel-default'><div class='panel-heading'><h4 style='margin-bottom:10px'>$<span class='text-danger'>" +
+                    response[i].price + "</span></h4></div><div class='panel-body'><a href="+
                     response[i].id +'/rental_detail/'+"><img src=" +
-                    response[i].picture + " style='width:200px; height:150px;' class='img-rounded'/></a><div class='caption'><h4 style='margin:0;'>" +
+                    response[i].picture + " style='width:200px; height:150px;' class='img-responsive'/></a></div><div class='panel-footer'><h4 style='margin:0;'>" +
                     response[i].address + "</h4><span class='text-primary' style='margin: 0;text-align: left'><h4>" +
-                    response[i].city + "</h4></span></div>")
-                .addTo(markers)
+                    response[i].city + "</h4></span></div></div>", customOptions)
+                .addTo(markers)//new markers
                 .on('mouseover', function (e) {
                     this.openPopup();
                 })
@@ -191,23 +182,27 @@ function showMap(response, markers, map) {
 
 
 //create html element:
-function createDiv(div, sortedData, i) {
-    div.append("<div class='panel panel-default' style='margin: 0; padding: 0;'><div class='panel-heading'><h4 class='text-primary'>$"+
-        sortedData[i].price +"</h4></div><div class='panel-body'>" +
-        "<a href="+sortedData[i].id+'/rental_detail/'+"><img src=" +
-        sortedData[i].picture + " style='height: 250px; width: 100%; margin: 0; padding: 0'>" +
-        "</a></div><div class='panel-footer'><h5 style='margin:0'> <span class='text-primary' style='margin: 0;text-align: left'>" +
-        sortedData[i].address + "</span></h5> <span style='margin: 0;text-align: right'>" +
-        sortedData[i].city + "</span> <span class='text-danger'>" +
-        sortedData[i].bedroom + "bed/" +
-        sortedData[i].bathroom + "bath</span></span> <a href="+
-        sortedData[i].id +'/rental_detail/' +" class='btn btn-primary btn-sm' role='button'>View Details</a><a name="+
-        sortedData[i].id +" class='btn btn-default btn-sm btn-favorite' role='button'><span class='glyphicon glyphicon-star'></span></a> <span><small>"+
-        sortedData[i].favorite_count +"</small></span><small class='pull-right text-primary'>"+
-        sortedData[i].time_created +"</small>" +
-        "</div></div>")
-
+function createDiv(sortedData) {
+    var div = $('<div>').attr({'class': 'col-sm-3 col-md-3', 'id': 'result-container'});
+    var data = [];
+    for (var i = 0; i < sortedData.length; i++) {
+        data.push({
+            price: sortedData[i].price,
+            rental_detail: sortedData[i].id + '/rental_detail/',
+            picture: sortedData[i].picture,
+            address: sortedData[i].address,
+            city: sortedData[i].city,
+            bedroom: sortedData[i].bedroom,
+            bathroom: sortedData[i].bathroom,
+            like: sortedData[i].id,
+            total_likes: sortedData[i].favorite_count,
+            timestamp: sortedData[i].time_created
+        });
+    }
+    $("#rentalUpdate").tmpl(data).appendTo(div);
+    $("#result-container").replaceWith(div);
 }
+
 function priceLowToHigh(rentals) {
     rentals.sort(function (a, b) {
         return parseFloat(a.price) - parseFloat(b.price);

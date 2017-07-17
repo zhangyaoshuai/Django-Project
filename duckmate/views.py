@@ -1,48 +1,41 @@
-from duck import settings
+import json
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
-from django.template.loader import get_template
-from django.core.mail import EmailMessage
 from django.contrib.auth import logout
 from django.http import JsonResponse
-from django.http import HttpResponse
-try:
-    from django.utils import simplejson as json
-except ImportError:
-    import json
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
+from django.views.generic.edit import FormView
+from django.views.generic import ListView, TemplateView, RedirectView, DeleteView, \
+    DetailView, UpdateView
+from django.core.urlresolvers import reverse_lazy
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q
 from .models import Rental
-from .forms import UserForm
-
+from .forms import LoginForm, RegisterForm
 
 IMAGE_FILE_TYPES = ['png', 'jpg', 'jpeg']
 
 
+
 def send_email(request):
-    subject = "I am an HTML email"
-    to = ['zhangys1989@163.com']
-    from_email = settings.EMAIL_HOST_USER
-
-    ctx = {
-        'user': 'Eric',
-
-    }
-
-    message = get_template('email/email.html').render(ctx)
-    msg = EmailMessage(subject, message, to=to, from_email=from_email)
-    msg.content_subtype = 'html'
-    msg.send()
-
-    return HttpResponse('Email sent!')
+    pass
 
 def activate(request, user_id):
     pass
 
+class IndexTemplateView(TemplateView):
+    template_name = 'index.html'
+    def get_context_data(self, **kwargs):
+        context = super(IndexTemplateView, self).get_context_data(**kwargs)
+        context['title'] = 'Welcome to duckmate'
+        return context
 
-def index(request):
-    return render(request, 'index.html')
+class RentalListView(ListView):
+    template_name = 'rentals.html'
+    model = Rental
+    context_object_name = 'rentals'
+
 
 def rentals(request):
     rentals = Rental.objects.all()
@@ -53,46 +46,92 @@ def rentals(request):
                 Q(title__icontains=query) | Q(description__icontains=query) |
                 Q(address__icontains=query) | Q(city__icontains=query)
             ).distinct()
-    return render(request, 'rentals.html', {'rentals': rentals})
-
-
-#return jsaon response for ajax request
-@csrf_exempt
-def getRentals(request):
-    rentals = Rental.objects.all()
-    if request.method == "POST":
-        query = request.POST['query']
-        if query:
-            rentals = rentals.filter(
-                Q(title__icontains=query) | Q(description__icontains=query) |
-                Q(address__icontains=query) | Q(city__icontains=query)
-            ).distinct()
-    jsonResults = {
-        "features": []
-    }
+    jsonResults = []
     if rentals:
         for rental in rentals:
             if rental.coordinate != "":
                 features = {
                     "coordinate": [float(rental.coordinate.split(',')[0]), float(rental.coordinate.split(',')[1])],
                     "id": int(rental.id),
-                    "slug": rental.slug.encode(encoding="utf-8"),
-                    "city": rental.city.encode(encoding="utf-8"),
-                    "address": rental.address.encode(encoding="utf-8"),
+                    "slug": rental.slug,
+                    "city": rental.city,
+                    "address": rental.address,
                     "bedroom": int(rental.bedroom),
                     "bathroom": int(rental.bathroom),
                     "favorite_count": int(rental.total_likes),
                     "picture": rental.picture.url,
                     "price": int(rental.price),
                     "phone_number": int(rental.phone_number),
-                    "email": rental.email.encode(encoding="utf-8"),
-                    "gender": rental.gender.encode(encoding="utf-8"),
-                    "student_type": rental.student_type.encode(encoding="utf-8"),
-                    "major": rental.major.encode(encoding="utf-8"),
+                    "email": rental.email,
+                    "gender": rental.gender,
+                    "student_type": rental.student_type,
+                    "major": rental.major,
+                    "time_created": rental.timestamp.isoformat()
+                }
+                jsonResults.append(features)
+    return render(request, 'rentals.html', {'rentals': rentals, 'response': jsonResults})
+
+
+#return json response for ajax request
+@csrf_exempt
+def getRentals(request):
+    rentals = Rental.objects.all()
+    if request.method == "POST":
+        #get query from user
+        query = request.POST['query']
+        if query:
+            rentals = rentals.filter(
+                Q(title__icontains=query) | Q(description__icontains=query) |
+                Q(address__icontains=query) | Q(city__icontains=query)
+            ).distinct()
+
+    jsonResults = [] #json response to ajax
+
+    if rentals:
+        for rental in rentals:
+            if rental.coordinate != "":
+                features = {
+                    "coordinate": [float(rental.coordinate.split(',')[0]), float(rental.coordinate.split(',')[1])],
+                    "id": int(rental.id),
+                    "slug": rental.slug,
+                    "city": rental.city,
+                    "address": rental.address,
+                    "bedroom": int(rental.bedroom),
+                    "bathroom": int(rental.bathroom),
+                    "favorite_count": int(rental.total_likes),
+                    "picture": rental.picture.url,
+                    "price": int(rental.price),
+                    "phone_number": int(rental.phone_number),
+                    "email": rental.email,
+                    "gender": rental.gender,
+                    "student_type": rental.student_type,
+                    "major": rental.major,
                     "time_created": rental.timestamp
                 }
-                jsonResults["features"].append(features)
-    return JsonResponse(jsonResults)
+                jsonResults.append(features)
+
+    return JsonResponse(jsonResults, safe=False)
+
+class RegisterFormView(FormView):
+    pass
+
+class RegisterFormView(FormView):
+    template_name = 'register.html'
+    form_class = RegisterForm
+    success_url = reverse_lazy('duckmate:rentals')
+
+    def dispatch(self, request, *args, **kwargs):
+        if self.request.user.is_authenticated():
+            return HttpResponseRedirect('duckmate:rentals')
+        else:
+            return super(RegisterFormView, self).dispatch(self,*args, **kwargs)
+
+    def form_valid(self, form):
+        form.save()
+        user = authenticate(username=self.request.POST['username'], password=self.request.POST['password'])
+        login(self.request, user)
+        return super(RegisterFormView, self).form_valid(form)
+
 
 def register(request):
     if request.method == "POST":
@@ -118,6 +157,17 @@ def register(request):
             return render(request, 'register.html', error)
     return render(request, 'register.html')
 
+class LoginFormView(FormView):
+    template_name = 'login.html'
+    form_class = LoginForm
+    success_url = reverse_lazy('duckmate: rentals')
+    def form_valid(self, form):
+        form.save()
+        user = authenticate(username=self.request.POST['username'], password=self.request.POST['password'])
+        login(self.request, user)
+        return super(RegisterFormView, self).form_valid(form)
+
+
 def log_in(request):
     if request.method == "POST":
         username = request.POST['username']
@@ -137,8 +187,14 @@ def log_out(request):
     logout(request)
     return redirect('/log_in/')
 
-def account(request):
+def password_reset(request):
     pass
+
+def account(request, user_id):
+    user = get_object_or_404(User, pk=user_id)
+    posts = user.rental_set.all()
+    likes = user.likes.all()
+    return render(request, 'account.html', {'posts': posts, 'likes': likes})
 
 def profile(request):
     pass
@@ -157,13 +213,12 @@ def like(request):
             # user has already liked this rental
             # remove like/user
             rental.likes.remove(user)
-            message = 'You disliked this'
+            success = False
         else:
             # add a new like for a rental
             rental.likes.add(user)
-            message = 'You liked this'
-
-        ctx = {'likes_count': rental.total_likes, 'message': message}
+            success = True
+        ctx = {'likes_count': rental.total_likes, 'success': success}
     # use mimetype instead of content_type if django < 5
         return HttpResponse(json.dumps(ctx), content_type='application/json')
 
@@ -175,6 +230,10 @@ def create_rental(request, user_id):
         user = get_object_or_404(User, pk=user_id)
         if request.method == 'POST':
             rental = Rental()
+            phone_number = request.POST['phone_number']
+            rental.phone_number = request.POST['phone_number']
+            email = request.POST['email']
+            rental.email = request.POST['email']
             rental.title = request.POST['title']
             rental.description = request.POST['description']
             rental.address = request.POST['address']
@@ -186,10 +245,6 @@ def create_rental(request, user_id):
             rental.bathroom = request.POST['bathroom']
             rental.city = request.POST['city']
             rental.picture =request.FILES['picture']
-            rental.email = request.POST['email']
-            email = request.POST['email']
-            rental.phone_number = request.POST['phone_number']
-            phone_number = request.POST['phone_number']
             rental.gender = request.POST['gender']
             rental.student_type = request.POST['student_type']
             rental.major = request.POST['major']
@@ -205,9 +260,10 @@ def create_rental(request, user_id):
                     confirm = request.POST["confirm"]
                     if confirm == "Yes":
                         rental.save()
-                        return redirect('%d/rental_detail' % int(rental.id))
+                        return HttpResponseRedirect('duckmate:rentals')
                     else:
                         render(request, 'create_rental.html')
+                return JsonResponse(error)
             else:
                 error = {
                     "error": "you already posted this rental, please post another one!"}
@@ -215,7 +271,12 @@ def create_rental(request, user_id):
         return render(request, 'create_rental.html')
 
 
-#rental detail method
+
+#rental detail
+class RentalDetailView(DetailView):
+    template_name = 'rental_detail.html'
+    model = Rental
+
 def rental_detail(request, rental_id):
     rental = get_object_or_404(Rental, pk=rental_id)
     return render(request, 'rental_detail.html', {'rental': rental, 'rental_id': rental_id})

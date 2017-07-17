@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}{{ user.username }}{% endblock %}
+{% block css %}
+{% endblock %}
+{% block script %}
+    <script id="rentalUpdate" type="text/x-jQuery-tmpl">
+        <div class="row">
+                    <div class="panel panel-default" style="margin: 0; padding:0">
+                    <div class="panel-heading">
+                        <h5 class="text-primary">$${price}</h5>
+                        <h6 class="text-info">{timestamp}</h6>
+                    </div>
+                    <div class="panel-body">
+                        <a href="${rental_detail}">
+                            <img src="${picture}" class="img-responsive" style="height: 250px; width: 100%;">
+                        </a>
+                    </div>
+
+                        <div class="panel-footer">
+                            <h5 style="margin:0"> ${address}</h5>
+                            <span style="margin: 0;text-align: right"> ${city}</span>
+                            <span class="text-danger"> ${bedroom}bed/${bathroom}bath</span>
+                            <a name="${like}" class="btn btn-default btn-sm btn-favorite" role="button">
+                                <span class="glyphicon glyphicon-star"></span>
+                            </a>
+                            <span>
+                            <small class="favorite_count">${total_likes}</small>
+                            </span>
+
+                        </div>
+                    </div>
+                </div>
+    </script>
+{% endblock %}
+{% block header %}
+    {% include 'header.html' %}
+{% endblock %}
+{% block content %}
+    <div class="container-fluid">
+    <div class="col-xs-6">
+    {% if posts %}
+            {% for post in posts %}
+                <div class="col-xs-6">
+                    <div class="panel panel-default" style="margin: 0; padding:0">
+                    <div class="panel-heading">
+                        <h5 class="text-primary">${{ post.price }}</h5>
+                        <h6 class="text-info">{{ post.timestamp }}</h6>
+
+                    </div>
+                    <div class="panel-body">
+                        <a href="{% url 'duckmate:rental_detail' post.id %}">
+                            <img src="{{ post.picture.url }}" class="img-responsive" style="height: 250px; width: 100%;">
+                        </a>
+                    </div>
+
+                        <div class="panel-footer">
+                            <h5 style="margin:0"> {{ post.address }}</h5>
+                            <span style="margin: 0;text-align: right"> {{ post.city }}</span>
+                            <span class="text-danger"> {{ post.bedroom }}bed/{{ post.bathroom }}bath</span>
+
+                            <a name="{{ post.id }}" class="btn btn-default btn-sm btn-favorite" role="button">
+                                <span class="glyphicon glyphicon-star"></span>
+                            </a>
+                            <span>
+                            <small class="favorite_count">{{ post.total_likes }}</small>
+                            </span>
+
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+        <div class="col-xs-6">
+            {% if likes %}
+                {% for like in likes %}
+                <div class="col-xs-6">
+                    <div class="panel panel-default" style="margin: 0; padding:0">
+                    <div class="panel-heading">
+                        <h5 class="text-primary">${{ like.price }}</h5>
+                        <h6 class="text-info">{{ like.timestamp }}</h6>
+                    </div>
+                    <div class="panel-body">
+                        <a href="{% url 'duckmate:rental_detail' like.id %}">
+                            <img src="{{ like.picture.url }}" class="img-responsive" style="height: 250px; width: 100%;">
+                        </a>
+                    </div>
+
+                        <div class="panel-footer">
+                            <h5 style="margin:0"> {{ like.address }}</h5>
+                            <span style="margin: 0;text-align: right"> {{ like.city }}</span>
+                            <span class="text-danger"> {{ like.bedroom }}bed/{{ like.bathroom }}bath</span>
+
+                            <a name="{{ like.id }}" class="btn btn-default btn-sm btn-favorite" role="button">
+                                <span class="glyphicon glyphicon-star"></span>
+                            </a>
+                            <span>
+                            <small class="favorite_count">{{ like.total_likes }}</small>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

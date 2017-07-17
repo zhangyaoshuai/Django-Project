@@ -1,18 +1,28 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
+{% load widget_tweaks %}
 {% block title %}Register{% endblock %}
 {% block css %}
     <style type="text/css">
+        h2, h4, h5, b{
+            color: #ffffff;
+        }
+        .image-container {
+            background-image: url('{% static "img/city.jpg" %}');
+        }
         /* Credit to bootsnipp.com for the css for the color graph */
         .colorgraph {
           height: 5px;
           border-top: 0;
-          background: #c4e17f;
+          background: #428BCA;
+
           border-radius: 5px;
+            /*
           background-image: -webkit-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
           background-image: -moz-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
           background-image: -o-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
           background-image: linear-gradient(to right, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
+        */
         }
     </style>
 {% endblock %}
@@ -25,13 +35,13 @@
 {% endblock %}
 {% block content %}
 <body>
-    <div class="container">
+    <div class="container-fluid image-container set-full-height">
 
         <div class="row">
             <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
                 <form role="form" method="post" name="register" id="register" action="{% url 'duckmate:register' %}">
                     {% csrf_token %}
-                    <h2>Please Sign Up <small>It's free and always will be.</small></h2>
+                    <h2 style="text-align: center">Please Sign Up</h2>
                     <hr class="colorgraph">
                     <div class="row">
                         <div class="col-xs-12 col-sm-6 col-md-6">
@@ -71,7 +81,7 @@
                             </span>
                         </div>
                         <div class="col-xs-8 col-sm-9 col-md-9">
-                             By clicking <strong class="label label-primary">Register</strong>, you agree to the <a href="#" data-toggle="modal" data-target="#t_and_c_m">Terms and Conditions</a> set out by this site, including our Cookie Use.
+                            <h5>By clicking <strong class="label label-primary">Register</strong>, you agree to the <a href="#" data-toggle="modal" data-target="#t_and_c_m"><b class="label label-primary">Terms and Conditions</b></a> set out by this site, including our Cookie Use.</h5>
                         </div>
                     </div>
 
@@ -107,47 +117,6 @@
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
     </div>
-<!--
-<div class="container-fluid">
-
-    <div class="row">
-        <div class="jumbotron">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <h3>Register for an Account</h3>
-                    {% if error_message %}
-                        <p><strong>{{ error_message }}</strong></p>
-                    {% endif %}
-                    <form class="form-horizontal" role="form" action="{% url 'duckmate:register' %}" method="post" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        {% if form %}
-                            {% for field in form %}
-                                <div class="form-group">
-                                    <div class="col-sm-offset-2 col-sm-10">
-                                        <span class="text-danger small">{{ field.errors }}</span>
-                                    </div>
-                                    <label class="control-label col-sm-2" for="{{ field.id }}">{{ field.label_tag }}</label>
-                                    <div class="col-sm-10">{{ field }}</div>
-                                </div>
-                            {% endfor %}
-                            {% endif %}
-                        <div class="form-group">
-                            <div class="col-sm-offset-2 col-sm-10">
-                                <button type="submit" class="btn btn-success">Submit</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="panel-footer">
-                    Already have an account? <a href="{% url 'duckmate:log_in' %}">Click here</a> to log in.
-                </div>
-            </div>
-        </div>
-    </div>
-
-</div>
--->
-
 
 </body>
 {% endblock %}

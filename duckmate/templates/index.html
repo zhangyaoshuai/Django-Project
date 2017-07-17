@@ -2,6 +2,7 @@
 {% load staticfiles %}
 {% block title %}Index{% endblock %}
 {% block css %}
+    <link href="{% static 'css/index.css' %}" rel="stylesheet">
 {% endblock %}
 {% block script %}
 {% endblock %}
@@ -9,6 +10,27 @@
     {% include 'basic_header.html' %}
 {% endblock %}
 {% block content %}
-    <h2>This is index page</h2>
-    <a href="{% url 'duckmate:send_email' %}">send email</a>
+    <div class="image-container set-full-height" style="background-image: url('{% static "img/city.jpg" %}')">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6 col-sm-offset-3 col-md-offset-3 col-xs-offset-3" style="padding-top:15%">
+                    <h2 style="text-align: center; color: #ffffff;">{{ title }}</h2>
+                    <h2 style="text-align: center; color: #ffffff;">Find your home</h2>
+                    <form method="post" action="{% url 'duckmate:rentals' %}">
+                        {% csrf_token %}
+                    <div id="custom-search-input">
+                        <div class="input-group col-md-12">
+                            <input type="text" id="address" name="query" class="form-control input-lg" placeholder="262 Palisade..." />
+                            <span class="input-group-btn">
+                                <button class="btn btn-info btn-lg" type="submit">
+                                    <i class="glyphicon glyphicon-search"></i>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                    </form>
+                </div>
+	</div>
+        </div>
+    </div>
 {% endblock %}
